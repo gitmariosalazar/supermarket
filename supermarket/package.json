@@ -1,0 +1,25 @@
+{
+  "name": "supermarket",
+  "version": "1.0.0",
+  "description": "Supermarket Project applying Data Structures and OOP",
+  "keywords": [
+    "Supermarket",
+    "Data",
+    "Structures"
+  ],
+  "license": "ISC",
+  "author": "Mario Salazar",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "ts-node src/main.ts",
+    "dev": "ts-node src/main.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
