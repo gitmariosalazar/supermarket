@@ -43,8 +43,8 @@ import {
   printProductsTable,
   printSellersTable,
   printTableWithItems
-} from './shared/utils/form/print.custom.table';
-import { ShowMessage } from './shared/utils/messages/message.util';
+} from './ui/components/form/print.custom.table';
+import { ShowMessage } from './ui/messages/message.util';
 
 const databaseMockup: DatabaseMockup = new DatabaseMockup();
 

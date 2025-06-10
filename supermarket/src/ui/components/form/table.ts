@@ -1,11 +1,12 @@
+import chalk from 'chalk';
 import { CustomerRequest } from '../../../modules/customers/domain/schemas/dto/request/customer.request';
 import { CustomerResponse } from '../../../modules/customers/domain/schemas/dto/response/customer.response';
 import { CustomerModel } from '../../../modules/customers/domain/schemas/model/customer.model';
 import { SellerRequest } from '../../../modules/sellers/domain/schemas/dto/request/seller.request';
 import { SellerResponse } from '../../../modules/sellers/domain/schemas/dto/response/seller.response';
 import { SellerModel } from '../../../modules/sellers/domain/schemas/model/seller.model';
-import { ShowMessage } from '../messages/message.util';
-import { FooterDetails } from './models.data.interface';
+import { ShowMessage } from '../../messages/message.util';
+import { FooterDetails } from '../../interfaces/models.data.interface';
 export const printTable = (
   dataTable: any[],
   headersColumns: string[],
@@ -77,7 +78,7 @@ export const printTable = (
   console.log(divider);
   // CENTER TITLE
   const centeredTitle = title.padStart((totalWidth + title.length) / 2, ' ');
-  console.log(centeredTitle);
+  console.log(ShowMessage.message(centeredTitle, 'success', true));
 
   if (customer || seller) {
     console.log(divider);
@@ -97,7 +98,7 @@ export const printTable = (
   headersColumns.forEach((header, i) => {
     headerLine += ` ${header.padEnd(columnWidths[i], ' ')} |`;
   });
-  console.log(ShowMessage.message(headerLine, 'info'));
+  console.log(ShowMessage.message(headerLine, 'info', true));
   console.log(divider);
   if (dataTable.length > 0) {
     // Rows
@@ -114,7 +115,7 @@ export const printTable = (
       (totalWidth + title.length) / 2,
       ' '
     );
-    console.log(ShowMessage.message(centeredMessage, 'warning'));
+    console.log(ShowMessage.message(centeredMessage, 'warning', true));
   }
   console.log(divider);
   if (footerDetails) {
@@ -128,7 +129,7 @@ export const printTable = (
       `Total      : ${footerDetails?.total.toFixed(2)}`.padStart(
         totalWidth - 1
       );
-    console.log(footer);
+    console.log(chalk.bold.greenBright(footer));
     console.log(divider);
   }
 };

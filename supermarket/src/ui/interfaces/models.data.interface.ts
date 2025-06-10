@@ -57,3 +57,8 @@ export interface FooterDetails {
   iva: number;
   total: number;
 }
+
+export interface ProductCategoryData {
+  name: string;
+  description: string;
+}

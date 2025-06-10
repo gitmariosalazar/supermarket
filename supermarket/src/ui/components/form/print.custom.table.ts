@@ -13,17 +13,47 @@ import { InvoiceResponse } from '../../../modules/sales/domain/schemas/dto/respo
 import { InvoiceModel } from '../../../modules/sales/domain/schemas/model/invoice.model';
 import { SellerResponse } from '../../../modules/sellers/domain/schemas/dto/response/seller.response';
 import { SellerModel } from '../../../modules/sellers/domain/schemas/model/seller.model';
-import { HashMap } from '../../models/hash-map';
-import { formatDate } from '../format/format-date';
+import { HashMap } from '../../../shared/models/hash-map';
+import { formatDate } from '../../utils/format/format-date';
 import {
   CustomerData,
   FooterDetails,
   ItemData,
   ListData,
+  ProductCategoryData,
   ProductData,
   SellerData
-} from './models.data.interface';
+} from '../../interfaces/models.data.interface';
 import { printTable } from './table';
+import { ProductCategoryModel } from '../../../modules/products/domain/schemas/model/category-product.model';
+import { ProductCategoryResponse } from '../../../modules/products/domain/schemas/dto/response/product-category.response';
+
+export const printProductCategoriesTable = (
+  productCategories:
+    | HashMap<string, ProductCategoryModel>
+    | ProductCategoryResponse[],
+  title: string
+) => {
+  const dataTable: ProductCategoryData[] = [];
+  const headersColumns: string[] = ['name', 'description'];
+
+  if (Array.isArray(productCategories)) {
+    productCategories.forEach((categoryResponse) => {
+      dataTable.push({
+        name: categoryResponse.name,
+        description: categoryResponse.description
+      });
+    });
+  } else {
+    for (const category of productCategories.getTable().values()) {
+      dataTable.push({
+        name: category.getName(),
+        description: category.getDescription()
+      });
+    }
+  }
+  printTable(dataTable, headersColumns, title);
+};
 
 export const printCustomersTable = (
   customers: HashMap<string, CustomerModel> | CustomerResponse[],
