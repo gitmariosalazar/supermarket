@@ -3,6 +3,7 @@ import { CartModel } from '../../modules/carts/domain/schemas/model/cart.model';
 import { CustomerModel } from '../../modules/customers/domain/schemas/model/customer.model';
 import { ProductCategoryModel } from '../../modules/products/domain/schemas/model/category-product.model';
 import { ProductModel } from '../../modules/products/domain/schemas/model/product.model';
+import { InvoiceModel } from '../../modules/sales/domain/schemas/model/invoice.model';
 import { SellerModel } from '../../modules/sellers/domain/schemas/model/seller.model';
 import { HashMap } from '../../shared/models/hash-map';
 import { PersonModel } from '../../shared/modules/person/domain/schemas/model/person.model';
@@ -20,7 +21,7 @@ export class DatabaseMockup {
   private sellers: HashMap<string, SellerModel>;
   private cartItems: HashMap<number, CartItemModel>;
   private carts: HashMap<number, CartModel>;
-  //private sales: HashMap<string, SellerModel>;
+  private invoices: HashMap<number, InvoiceModel>;
   //private detailsInvoices: HashMap<string, SellerModel>;
 
   constructor() {
@@ -31,6 +32,7 @@ export class DatabaseMockup {
     this.sellers = new HashMap();
     this.cartItems = new HashMap();
     this.carts = new HashMap();
+    this.invoices = new HashMap();
     this.initialize();
   }
 
@@ -99,6 +101,10 @@ export class DatabaseMockup {
       );
       this.sellers.add(seller.idSeller, sellerModel);
     }
+  }
+
+  public getInvoices(): HashMap<number, InvoiceModel> {
+    return this.invoices;
   }
 
   public getCarts(): HashMap<number, CartModel> {
