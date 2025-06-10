@@ -22,8 +22,12 @@ export class ProductsMain {
       2. ${ShowMessage.message('Update product', 'success', true)}
       3. ${ShowMessage.message('List product', 'success', true)}
       4. ${ShowMessage.message('Search product', 'success', true)}
-      5. ${ShowMessage.message('Back to main', 'success', true)}`;
+      5. ${ShowMessage.message('Stock Warning products', 'success', true)}
+      6. ${ShowMessage.message('Filter products in Stock', 'success', true)}
+      7. ${ShowMessage.message('Filter by category', 'success', true)}
+      8. ${ShowMessage.message('Back to main', 'success', true)}`;
     let option: number = 0;
+    const endOption: number = 8;
 
     while (true) {
       console.clear();
@@ -31,9 +35,9 @@ export class ProductsMain {
 
       option = isPositiveNumberPrompt(message);
 
-      const isValidOption: boolean = option > 0 && option < 6;
+      const isValidOption: boolean = option > 0 && option < endOption;
 
-      if (isValidOption && option < 5) {
+      if (isValidOption && option < endOption) {
         if (option === 1) {
           this.addProductOption();
         }
@@ -46,8 +50,17 @@ export class ProductsMain {
         if (option === 4) {
           this.searchProductOption();
         }
+        if (option === 5) {
+          this.listProductsWarningStock();
+        }
+        if (option === 6) {
+          this.listProductsBetweenStock();
+        }
+        if (option === 7) {
+          this.filterProductsByCategoriesOption();
+        }
         readlineSync.question('Press Enter to return to the menu...');
-      } else if (option > 5) {
+      } else if (option > endOption) {
         console.log(
           ShowMessage.message(
             '❌ Option is not valid! Try again!',
@@ -58,7 +71,7 @@ export class ProductsMain {
         readlineSync.question('Press Enter to return to the menu...');
       }
 
-      if (option === 5) {
+      if (option === endOption) {
         console.log(
           ShowMessage.message(
             'Goodbye, I hope you come back soon. 👋👋',
@@ -67,6 +80,102 @@ export class ProductsMain {
           )
         );
         break;
+      }
+    }
+  }
+
+  private filterProductsByCategoriesOption(): void {
+    console.log(ShowMessage.message('Filtering Products by Category'));
+    let categoryName: string;
+    while (true) {
+      categoryName = promptNonEmptyString('Enter the category name: ');
+      const categoryByName: ProductCategoryResponse | null =
+        this.appFactory.productCategoryController.findProductCategoryByName(
+          categoryName
+        );
+      const productsFound: ProductResponse[] =
+        this.appFactory.productController.findProductByCategoryName(
+          categoryName
+        );
+      if (productsFound.length > 0) {
+        if (categoryByName !== null) {
+          console.log(
+            ShowMessage.message(
+              `Product list by Category Name: ${categoryName}`,
+              'success',
+              true
+            )
+          );
+          printProductsTable(
+            productsFound,
+            `Products by Category name: ${categoryName}`
+          );
+        }
+        break;
+      } else {
+        const categories: ProductCategoryResponse[] =
+          this.appFactory.productCategoryController.findAllProductCategories();
+        console.log(
+          ShowMessage.message(
+            'Category not found. Please choose the following categories',
+            'warning',
+            true
+          )
+        );
+        printProductCategoriesTable(categories, 'Product category List');
+      }
+    }
+  }
+
+  private listProductsWarningStock(): void {
+    const productsFound: ProductResponse[] =
+      this.appFactory.productController.findProductWarningStock();
+    if (productsFound.length > 0) {
+      printProductsTable(productsFound, 'Products List in Warning Stock');
+    } else {
+      console.log(
+        ShowMessage.message(`Products in warning stock is empty!`, 'info', true)
+      );
+    }
+  }
+
+  private listProductsBetweenStock(): void {
+    let startStock: number;
+    let endStock: number;
+
+    while (true) {
+      startStock = isPositiveNumberPrompt('Enter the start stock: ');
+      endStock = isPositiveNumberPrompt('Enter the end stock: ');
+      const isValid: boolean = startStock < endStock;
+      if (isValid) {
+        const productsFound: ProductResponse[] =
+          this.appFactory.productController.findProductsBetweenStock(
+            startStock,
+            endStock
+          );
+        if (productsFound.length > 0) {
+          printProductsTable(
+            productsFound,
+            'Products List between start and end stock'
+          );
+        } else {
+          console.log(
+            ShowMessage.message(
+              `Products between start and end stock is empty!`,
+              'info',
+              true
+            )
+          );
+        }
+        break;
+      } else {
+        console.log(
+          ShowMessage.message(
+            'The start of stock must be less than the end of stock',
+            'error',
+            true
+          )
+        );
       }
     }
   }
