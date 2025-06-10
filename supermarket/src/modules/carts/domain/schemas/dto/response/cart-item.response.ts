@@ -3,7 +3,7 @@ import { CartResponse } from './cart.response';
 
 export interface CartItemResponse {
   idCartItem?: number;
-  cart: CartResponse;
+  cart: CartResponse | null;
   product: ProductResponse;
   quantity: number;
   unitPrice: number;

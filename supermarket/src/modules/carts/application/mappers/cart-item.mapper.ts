@@ -13,7 +13,7 @@ export class CartItemMapper {
     const cartRequest: CartRequest = cartItemRequest.cart;
 
     const cartItemModel: CartItemModel = new CartItemModel(
-      CartMapper.cartRequestToCartModel(cartRequest),
+      null, //CartMapper.cartRequestToCartModel(cartRequest)
       ProductMapper.productRequestToProductModel(productRequest),
       0,
       0,

@@ -30,6 +30,7 @@ export class CartRepositoryMockupImplementation
     const cartCreated: CartModel | undefined = this.databaseMockup
       .getCarts()
       .add(cartModel.getIdCart(), cartModel);
+   
     return cartCreated !== undefined
       ? CartAdapter.cartModelToCartResponse(cartCreated)
       : null;

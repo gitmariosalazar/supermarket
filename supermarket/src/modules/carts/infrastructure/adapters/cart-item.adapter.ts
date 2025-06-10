@@ -1,4 +1,5 @@
 import { ProductAdapter } from '../../../products/infrastructure/adapters/product.adapter';
+import { CartItemRequest } from '../../domain/schemas/dto/request/cart-item.request';
 import { CartItemResponse } from '../../domain/schemas/dto/response/cart-item.response';
 import { CartItemModel } from '../../domain/schemas/model/cart-items.model';
 import { CartAdapter } from './cart.adapter';
@@ -9,7 +10,7 @@ export class CartItemAdapter {
   ): CartItemResponse {
     const cartItemResponse: CartItemResponse = {
       idCartItem: cartItemModel.getIdCartItem(),
-      cart: CartAdapter.cartModelToCartResponse(cartItemModel.getCart()),
+      cart: null,
       product: ProductAdapter.productModelToProductResponse(
         cartItemModel.getProduct()
       ),
@@ -18,5 +19,17 @@ export class CartItemAdapter {
       totalPrice: cartItemModel.getTotalPrice()
     };
     return cartItemResponse;
+  }
+
+  static cartItemResponseToCartItemRequest(
+    cartItemResponse: CartItemResponse
+  ): CartItemRequest {
+    const cartItemRequest: CartItemRequest = new CartItemRequest(
+      CartAdapter.cartResponseToCartRequest(cartItemResponse.cart!),
+      ProductAdapter.productResponseToProductRequest(cartItemResponse.product),
+      cartItemResponse.quantity,
+      cartItemResponse.idCartItem
+    );
+    return cartItemRequest;
   }
 }

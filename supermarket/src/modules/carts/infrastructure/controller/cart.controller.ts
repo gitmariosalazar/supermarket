@@ -17,4 +17,8 @@ export class CartController {
   findCartByCustomer(idCustomer: string): CartModel | null {
     return this.cartService.findCartByIdCustomerInQueue(idCustomer);
   }
+
+  findCartById(id: number): CartResponse | null {
+    return this.cartService.findCartById(id);
+  }
 }

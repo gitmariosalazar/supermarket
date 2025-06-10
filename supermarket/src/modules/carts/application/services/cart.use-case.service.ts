@@ -19,6 +19,11 @@ export class CartService implements InterfaceCartUseCase {
   }
 
   createCart(cartRequest: CartRequest): CartResponse | null {
+    /*
+    console.log(`first`);
+    console.log(cartRequest.cartItems.find('ELEC004'));
+    console.log(`first`);
+    */
     return this.cartRepository.createCart(
       CartMapper.cartRequestToCartModel(cartRequest)
     );

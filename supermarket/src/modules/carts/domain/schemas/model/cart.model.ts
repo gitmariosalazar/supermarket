@@ -25,7 +25,7 @@ export class CartModel {
     this.total = total === undefined ? 0 : total;
     this.idCart = idCart === undefined ? 0 : idCart;
   }
-
+  /*
   addToCart(cartItemModel: CartItemModel): void {
     cartItemModel.setUnitPrice(cartItemModel.getProduct().getPublicPrice());
     cartItemModel.setTotalPrice(
@@ -49,7 +49,7 @@ export class CartModel {
     this.total += this.subtotal * 1.12;
     this.iva = this.total - this.subtotal;
   }
-
+*/
   public getIdCart(): number {
     return this.idCart === undefined ? 0 : this.idCart;
   }

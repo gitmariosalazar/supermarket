@@ -10,7 +10,7 @@ export class CartItemModel {
   private totalPrice?: number;
 
   constructor(
-    cart: CartModel,
+    cart: CartModel | null,
     product: ProductModel,
     quantity: number,
     unitPrice?: number,
@@ -18,7 +18,7 @@ export class CartItemModel {
     idCartItem?: number
   ) {
     this.idCartItem = idCartItem;
-    this.cart = cart;
+    this.cart = cart!;
     this.product = product;
     this.quantity = quantity;
     this.unitPrice = unitPrice;
