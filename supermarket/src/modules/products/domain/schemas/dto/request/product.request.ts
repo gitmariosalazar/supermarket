@@ -8,6 +8,7 @@ export class ProductRequest {
   public category: ProductCategoryRequest;
   public stock: number;
   public supplierPrice: number;
+  public publicPrice?: number;
 
   constructor(
     code: string,
@@ -25,5 +26,6 @@ export class ProductRequest {
     this.category = category;
     this.stock = stock;
     this.supplierPrice = supplierPrice;
+    this.publicPrice = 0;
   }
 }
