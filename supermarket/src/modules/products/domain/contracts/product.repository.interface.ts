@@ -1,13 +1,13 @@
-import { ProductRequest } from '../../domain/schemas/dto/request/product.request';
-import { ProductResponse } from '../../domain/schemas/dto/response/product.response';
+import { ProductResponse } from '../schemas/dto/response/product.response';
+import { ProductModel } from '../schemas/model/product.model';
 
-export interface InterfaceUseCaseProduct {
+export interface InterfaceProductRepository {
   findAllProducts(): ProductResponse[];
   findProductByCode(code: string): ProductResponse | null;
-  createProduct(productRequest: ProductRequest): ProductResponse | null;
+  createProduct(productModel: ProductModel): ProductResponse | null;
   updateProduct(
     code: string,
-    productRequest: ProductRequest
+    productModel: ProductModel
   ): ProductResponse | null;
   findProductWarningStock(): ProductResponse[];
   findProductsBetweenStock(

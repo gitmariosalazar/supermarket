@@ -1,4 +1,4 @@
-import { InterfaceProductCategoryRepository } from '../../domain/contracts/category/product-category.repository.interface';
+import { InterfaceProductCategoryRepository } from '../../domain/contracts/product-category.repository.interface';
 import { ProductCategoryRequest } from '../../domain/schemas/dto/request/product-category.request';
 import { ProductCategoryResponse } from '../../domain/schemas/dto/response/product-category.response';
 import { ProductCategoryModel } from '../../domain/schemas/model/category-product.model';

@@ -1,4 +1,4 @@
-import { InterfaceProductRepository } from '../../domain/contracts/category/product.repository.interface';
+import { InterfaceProductRepository } from '../../domain/contracts/product.repository.interface';
 import { ProductRequest } from '../../domain/schemas/dto/request/product.request';
 import { ProductResponse } from '../../domain/schemas/dto/response/product.response';
 import { ProductModel } from '../../domain/schemas/model/product.model';
@@ -11,6 +11,9 @@ export class ProductService implements InterfaceUseCaseProduct {
     this.productRepository = productRepository;
   }
 
+  findProductsByCategoryName(categoryName: string): ProductResponse[] {
+    return this.productRepository.findProductsByCategoryName(categoryName)
+  }
   findAllProducts(): ProductResponse[] {
     return this.productRepository.findAllProducts();
   }
@@ -33,5 +36,19 @@ export class ProductService implements InterfaceUseCaseProduct {
     const productModelToUpdate: ProductModel =
       ProductMapper.productRequestToProductModel(productRequest);
     return this.productRepository.updateProduct(code, productModelToUpdate);
+  }
+
+  findProductWarningStock(): ProductResponse[] {
+    return this.productRepository.findProductWarningStock();
+  }
+
+  findProductsBetweenStock(
+    startStock: number,
+    endStock: number
+  ): ProductResponse[] {
+    return this.productRepository.findProductsBetweenStock(
+      startStock,
+      endStock
+    );
   }
 }

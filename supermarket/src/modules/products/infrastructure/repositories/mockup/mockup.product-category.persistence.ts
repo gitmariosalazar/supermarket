@@ -1,6 +1,6 @@
 import { DatabaseMockup } from '../../../../../database/mockup/database';
 import { HashMap } from '../../../../../shared/models/hash-map';
-import { InterfaceProductCategoryRepository } from '../../../domain/contracts/category/product-category.repository.interface';
+import { InterfaceProductCategoryRepository } from '../../../domain/contracts/product-category.repository.interface';
 import { ProductCategoryResponse } from '../../../domain/schemas/dto/response/product-category.response';
 import { ProductCategoryModel } from '../../../domain/schemas/model/category-product.model';
 import { ProductCategoryAdapter } from '../../adapters/product-category.adapter';

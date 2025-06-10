@@ -8,6 +8,10 @@ export class ProductController {
     return this.productService.findAllProducts();
   }
 
+  findProductByCategoryName(categoryName: string): ProductResponse[] {
+    return this.productService.findProductsByCategoryName(categoryName);
+  }
+
   findProductByCode(code: string): ProductResponse | null {
     return this.productService.findProductByCode(code);
   }
@@ -21,5 +25,16 @@ export class ProductController {
     productRequest: ProductRequest
   ): ProductResponse | null {
     return this.productService.updateProduct(code, productRequest);
+  }
+
+  findProductWarningStock(): ProductResponse[] {
+    return this.productService.findProductWarningStock();
+  }
+
+  findProductsBetweenStock(
+    startStock: number,
+    endStock: number
+  ): ProductResponse[] {
+    return this.productService.findProductsBetweenStock(startStock, endStock);
   }
 }
