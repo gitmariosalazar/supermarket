@@ -17,7 +17,11 @@ import readlineSync from 'readline-sync';
 export class ProductsMain {
   constructor(private readonly appFactory: AppFactory) {}
   main(message: string) {
-    const options: string = `Choose a option:
+    const options: string = `${ShowMessage.message(
+      `WELCOME TO THE PRODUCTS MODULE`,
+      'info',
+      true
+    )}\nChoose an option:
       1. ${ShowMessage.message('Add product', 'success', true)}
       2. ${ShowMessage.message('Update product', 'success', true)}
       3. ${ShowMessage.message('List product', 'success', true)}
@@ -224,6 +228,76 @@ export class ProductsMain {
       const productFound: ProductResponse | null =
         this.appFactory.productController.findProductByCode(code);
       if (productFound !== null) {
+        const name: string = promptNonEmptyString('Enter the new Name: ');
+        const description: string = promptNonEmptyString(
+          'Enter the new description: '
+        );
+        let categoryRequest: ProductCategoryRequest;
+        let category: string = '';
+        while (true) {
+          category = promptNonEmptyString('Enter the product category: ');
+          const categoryFound: ProductCategoryResponse | null =
+            this.appFactory.productCategoryController.findProductCategoryByName(
+              category
+            );
+          if (categoryFound !== null) {
+            category = categoryFound.name;
+            categoryRequest = new ProductCategoryRequest(
+              categoryFound.name,
+              categoryFound.description
+            );
+            break;
+          } else {
+            console.log(
+              ShowMessage.message(
+                'Category product not found!',
+                'warning',
+                true
+              )
+            );
+            const categoriesResponse: ProductCategoryResponse[] | null =
+              this.appFactory.productCategoryController.findAllProductCategories();
+            printProductCategoriesTable(
+              categoriesResponse,
+              'Products Categories to choose'
+            );
+          }
+        }
+        const iva: number = isPositiveNumberPrompt('Enter the product IVA: ');
+        const stock: number = isPositiveNumberPrompt(
+          'Enter the product stock: '
+        );
+        const supplierPrice: number = isPositiveNumberPrompt(
+          'Enter the supplier price: '
+        );
+        const productRequest: ProductRequest = new ProductRequest(
+          code,
+          name,
+          description,
+          iva,
+          categoryRequest,
+          stock,
+          supplierPrice
+        );
+        const productResponseUpdated: ProductResponse | null =
+          this.appFactory.productController.updateProduct(code, productRequest);
+        if (productResponseUpdated !== null) {
+          printProductsTable(
+            [productResponseUpdated],
+            `Product with code: ${code} updated`
+          );
+          console.log(
+            ShowMessage.message('✅ Product was updated successfully!')
+          );
+        } else {
+          console.log(
+            ShowMessage.message(
+              '❌ Error. The product could not be updated',
+              'error',
+              true
+            )
+          );
+        }
         break;
       } else {
         console.log(
@@ -234,79 +308,6 @@ export class ProductsMain {
           )
         );
       }
-    }
-    const name: string = promptNonEmptyString('Enter the new Name: ');
-    const description: string = promptNonEmptyString(
-      'Enter the new description: '
-    );
-    let categoryRequest: ProductCategoryRequest;
-    let category: string = '';
-    while (true) {
-      category = promptNonEmptyString('Enter the product category: ');
-      const categoryFound: ProductCategoryResponse | null =
-        this.appFactory.productCategoryController.findProductCategoryByName(
-          category
-        );
-      if (categoryFound !== null) {
-        category = categoryFound.name;
-        categoryRequest = new ProductCategoryRequest(
-          categoryFound.name,
-          categoryFound.description
-        );
-        break;
-      } else {
-        console.log(
-          ShowMessage.message('Category product not found!', 'warning', true)
-        );
-        const categoriesResponse: ProductCategoryResponse[] | null =
-          this.appFactory.productCategoryController.findAllProductCategories();
-        printProductCategoriesTable(
-          categoriesResponse,
-          'Products Categories to choose'
-        );
-      }
-    }
-    const iva: number = isPositiveNumberPrompt('Enter the product IVA: ');
-    const stock: number = isPositiveNumberPrompt('Enter the product stock: ');
-    const supplierPrice: number = isPositiveNumberPrompt(
-      'Enter the supplier price: '
-    );
-    const productRequest: ProductRequest = new ProductRequest(
-      code,
-      name,
-      description,
-      iva,
-      categoryRequest,
-      stock,
-      supplierPrice
-    );
-    const productResponseUpdated: ProductResponse | null =
-      this.appFactory.productController.updateProduct(code, productRequest);
-    if (productResponseUpdated !== null) {
-      console.log(
-        ShowMessage.message(
-          `
-      Product Code: ${productResponseUpdated.code}
-      Product Name: ${productResponseUpdated.name}
-      Product Description: ${productResponseUpdated.description}
-      Product IVA: ${productResponseUpdated.iva}
-      Product Public Price: ${productResponseUpdated.publicPrice}
-      Product Supplier Price: ${productResponseUpdated.supplierPrice}
-      Product Category: ${productResponseUpdated.category.name}
-      Product Stock: ${productResponseUpdated.stock}
-      `,
-          'info'
-        )
-      );
-      console.log(ShowMessage.message('✅ Product was updated successfully!'));
-    } else {
-      console.log(
-        ShowMessage.message(
-          '❌ Error. The product could not be updated',
-          'error',
-          true
-        )
-      );
     }
   }
 
