@@ -20,6 +20,7 @@ import {
   FooterDetails,
   ItemData,
   ListData,
+  ListQueueData,
   ProductCategoryData,
   ProductData,
   SellerData
@@ -27,6 +28,8 @@ import {
 import { printTable } from './table';
 import { ProductCategoryModel } from '../../../modules/products/domain/schemas/model/category-product.model';
 import { ProductCategoryResponse } from '../../../modules/products/domain/schemas/dto/response/product-category.response';
+import { ShowMessage } from '../../messages/message.util';
+import { PriorityQueue } from '../../../shared/models/queue';
 
 export const printProductCategoriesTable = (
   productCategories:
@@ -118,7 +121,7 @@ export const printSellersTable = (
       dataTable.push({
         idSeller: sellerResponse.idSeller,
         hireDate: formatDate(sellerResponse.hireDate),
-        salary: sellerResponse.salary,
+        salary: sellerResponse.salary.toFixed(2),
         cardId: sellerResponse.person.cardId,
         fullName: `${sellerResponse.person.firstName} ${sellerResponse.person.lastName}`,
         email: sellerResponse.person.email,
@@ -131,7 +134,7 @@ export const printSellersTable = (
       dataTable.push({
         idSeller: seller.getIdSeller(),
         hireDate: formatDate(seller.getHireDate()),
-        salary: seller.getSalary(),
+        salary: seller.getSalary().toFixed(2),
         cardId: seller.getCardId(),
         fullName: `${seller.getFirstName()} ${seller.getLastName()}`,
         email: seller.getEmail(),
@@ -165,11 +168,11 @@ export const printProductsTable = (
         code: productResponse.code,
         name: productResponse.name,
         description: productResponse.description,
-        iva: productResponse.iva,
+        iva: productResponse.iva.toFixed(2),
         category: productResponse.category.name,
-        stock: productResponse.stock,
-        publicPrice: Number(productResponse.publicPrice.toFixed(3)),
-        supplierPrice: productResponse.supplierPrice
+        stock: productResponse.stock.toFixed(0),
+        publicPrice: productResponse.publicPrice.toFixed(2),
+        supplierPrice: productResponse.supplierPrice.toFixed(2)
       });
     });
   } else {
@@ -178,11 +181,11 @@ export const printProductsTable = (
         code: productModel.getCode(),
         name: productModel.getName(),
         description: productModel.getDescription(),
-        iva: productModel.getIva(),
+        iva: productModel.getIva().toFixed(2),
         category: productModel.getCategory().getName(),
-        stock: productModel.getStock(),
-        publicPrice: Number(productModel.getSupplierPrice().toFixed(3)),
-        supplierPrice: productModel.getSupplierPrice()
+        stock: productModel.getStock().toFixed(0),
+        publicPrice: productModel.getSupplierPrice().toFixed(2),
+        supplierPrice: productModel.getSupplierPrice().toFixed(2)
       });
     }
   }
@@ -210,9 +213,8 @@ export const printListTable = (
   if (Array.isArray(list)) {
     list.forEach((item) => {
       if (isInvoiceResponse(item)) {
-        console.log(`first`, item.seller.idSeller);
         dataTable.push({
-          id: item.idInvoice,
+          id: item.idInvoice.toFixed(0),
           idSeller: item.seller.idSeller,
           seller:
             item.seller.person.firstName + ' ' + item.seller.person.lastName,
@@ -222,9 +224,9 @@ export const printListTable = (
             ' ' +
             item.cart.customer.person.lastName,
           date: formatDate(new Date()),
-          subtotal: item.subtotal,
-          iva: item.iva,
-          total: item.total
+          subtotal: item.subtotal.toFixed(2),
+          iva: item.iva.toFixed(2),
+          total: item.total.toFixed(2)
         });
         headersColumns = [
           'id',
@@ -240,16 +242,16 @@ export const printListTable = (
         title = 'Invoice List';
       } else if (isCartResponse(item)) {
         dataTable.push({
-          id: item.idCart!,
+          id: item.idCart!.toFixed(0),
           idCustomer: item.customer.idCustomer,
           customer:
             item.customer.person.firstName +
             ' ' +
             item.customer.person.lastName,
           date: formatDate(new Date()),
-          subtotal: item.subtotal,
-          iva: item.iva,
-          total: item.total
+          subtotal: item.subtotal.toFixed(2),
+          iva: item.iva.toFixed(2),
+          total: item.total.toFixed(2)
         });
         headersColumns = [
           'id',
@@ -266,7 +268,7 @@ export const printListTable = (
     for (const invoice of list.getTable().values()) {
       if (invoice instanceof InvoiceModel) {
         dataTable.push({
-          id: invoice.getIdInvoice(),
+          id: invoice.getIdInvoice().toFixed(0),
           idSeller: invoice.getSalesman().getIdSeller(),
           seller:
             invoice.getSalesman().getFirstName() +
@@ -278,9 +280,9 @@ export const printListTable = (
             ' ' +
             invoice.getCart().getCustomer().getLastName(),
           date: formatDate(new Date()),
-          subtotal: invoice.getSubtotal(),
-          iva: invoice.getIva(),
-          total: invoice.getTotal()
+          subtotal: invoice.getSubtotal().toFixed(2),
+          iva: invoice.getIva().toFixed(2),
+          total: invoice.getTotal().toFixed(2)
         });
         headersColumns = [
           'id',
@@ -295,16 +297,16 @@ export const printListTable = (
         ];
       } else {
         dataTable.push({
-          id: invoice.getIdCart(),
+          id: invoice.getIdCart().toFixed(0),
           idCustomer: invoice.getCustomer().getIdCustomer(),
           customer:
             invoice.getCustomer().getFirstName() +
             ' ' +
             invoice.getCustomer().getLastName(),
           date: formatDate(new Date()),
-          subtotal: invoice.getSubtotal(),
-          iva: invoice.getIva(),
-          total: invoice.getTotal()
+          subtotal: invoice.getSubtotal().toFixed(2),
+          iva: invoice.getIva().toFixed(2),
+          total: invoice.getTotal().toFixed(2)
         });
         headersColumns = [
           'id',
@@ -316,6 +318,71 @@ export const printListTable = (
           'total'
         ];
       }
+    }
+  }
+  printTable(dataTable, headersColumns, title);
+};
+
+export const printListQueueTable = (
+  list: PriorityQueue<CartRequest>,
+  title: string
+) => {
+  const sortedQueue: { turn: number; priority: number; data: CartRequest }[] =
+    list.getSortedQueueByPriority();
+  const dataTable: ListQueueData[] = [];
+  let headersColumns: string[] = [
+    'id',
+    'idCustomer',
+    'customer',
+    'date',
+    'subtotal',
+    'iva',
+    'total',
+    'priority',
+    'turn'
+  ];
+  for (const { turn, priority, data } of sortedQueue) {
+    dataTable.push({
+      id: data.idCart!.toFixed(0),
+      idCustomer: data.customer.idCustomer,
+      customer: data.customer.firstName + ' ' + data.customer.lastName,
+      date: formatDate(new Date()),
+      subtotal: data.subtotal!.toFixed(2),
+      iva: data.iva!.toFixed(2),
+      total: data.total!.toFixed(2),
+      priority: priority.toFixed(0),
+      turn: turn.toFixed(0)
+    });
+  }
+  printTable(dataTable, headersColumns, title);
+};
+
+export const printListQueueTableAux = (list: CartRequest[], title: string) => {
+  const dataTable: ListQueueData[] = [];
+  let headersColumns: string[] = [];
+  for (const item of list) {
+    if (item instanceof CartRequest) {
+      dataTable.push({
+        id: item.idCart!.toFixed(0),
+        idCustomer: item.customer.idCustomer,
+        customer: item.customer.firstName + ' ' + item.customer.lastName,
+        date: formatDate(new Date()),
+        subtotal: item.subtotal!.toFixed(2),
+        iva: item.iva!.toFixed(2),
+        total: item.total!.toFixed(2),
+        priority: '0',
+        turn: '0'
+      });
+      headersColumns = [
+        'id',
+        'idCustomer',
+        'customer',
+        'date',
+        'subtotal',
+        'iva',
+        'total',
+        'priority'
+      ];
     }
   }
   printTable(dataTable, headersColumns, title);
@@ -340,134 +407,140 @@ export const printTableWithItems = (
     'iva',
     'totalPrice'
   ];
-  if (data instanceof InvoiceModel) {
-    const customer: CustomerModel = data.getCart().getCustomer();
-    const seller: SellerModel = data.getSalesman();
-    const items: HashMap<string, CartItemModel> = data.getCart().getCartItems();
-    footerDetails.subtotal = data.getSubtotal();
-    footerDetails.iva = data.getIva();
-    footerDetails.total = data.getTotal();
-    Array.from(items.getTable().values()).forEach((item) => {
-      dataTable.push({
-        code: item.getProduct().getCode(),
-        name: item.getProduct().getName(),
-        quantity: item.getQuantity(),
-        unitPrice: item.getProduct().getPublicPrice(),
-        subtotal: item.getTotalPrice(),
-        iva: item.getTotalPrice(),
-        totalPrice: item.getTotalPrice()
+  if (data !== null) {
+    if (data instanceof InvoiceModel) {
+      const customer: CustomerModel = data.getCart().getCustomer();
+      const seller: SellerModel = data.getSalesman();
+      const items: HashMap<string, CartItemModel> = data
+        .getCart()
+        .getCartItems();
+      footerDetails.subtotal = data.getSubtotal();
+      footerDetails.iva = data.getIva();
+      footerDetails.total = data.getTotal();
+      Array.from(items.getTable().values()).forEach((item) => {
+        dataTable.push({
+          code: item.getProduct().getCode(),
+          name: item.getProduct().getName(),
+          quantity: item.getQuantity().toFixed(0),
+          unitPrice: item.getProduct().getPublicPrice().toFixed(2),
+          subtotal: item.getSubtotal().toFixed(2),
+          iva: item.getIva().toFixed(2),
+          totalPrice: item.getTotalPrice().toFixed(2)
+        });
       });
-    });
-    printTable(
-      dataTable,
-      headersColumns,
-      title,
-      customer,
-      seller,
-      footerDetails
-    );
-  } else if ('idInvoice' in data) {
-    const customer: CustomerResponse = data.cart.customer;
-    const seller: SellerResponse = data.seller;
-    const items: CartItemResponse[] = data.cart.cartItems;
-    footerDetails.subtotal = data.subtotal;
-    footerDetails.iva = data.iva;
-    footerDetails.total = data.total;
-    items.forEach((item) => {
-      dataTable.push({
-        code: item.product.code,
-        name: item.product.name,
-        quantity: item.quantity,
-        unitPrice: item.product.publicPrice,
-        subtotal: item.product.publicPrice,
-        iva: item.product.publicPrice,
-        totalPrice: item.product.publicPrice
+      printTable(
+        dataTable,
+        headersColumns,
+        title,
+        customer,
+        seller,
+        footerDetails
+      );
+    } else if (data instanceof CartModel) {
+      const customer: CustomerModel = data.getCustomer();
+      const items: HashMap<string, CartItemModel> = data.getCartItems();
+      footerDetails.subtotal = data.getSubtotal();
+      footerDetails.iva = data.getIva();
+      footerDetails.total = data.getTotal();
+      Array.from(items.getTable().values()).forEach((item) => {
+        dataTable.push({
+          code: item.getProduct().getCode(),
+          name: item.getProduct().getName(),
+          quantity: item.getQuantity().toFixed(2),
+          unitPrice: item.getProduct().getPublicPrice().toFixed(2),
+          subtotal: item.getSubtotal().toFixed(2),
+          iva: item.getIva().toFixed(2),
+          totalPrice: item.getTotalPrice().toFixed(2)
+        });
       });
-    });
-    printTable(
-      dataTable,
-      headersColumns,
-      title,
-      customer,
-      seller,
-      footerDetails
-    );
-  } else if (data instanceof CartModel) {
-    const customer: CustomerModel = data.getCustomer();
-    const items: HashMap<string, CartItemModel> = data.getCartItems();
-    footerDetails.subtotal = data.getSubtotal();
-    footerDetails.iva = data.getIva();
-    footerDetails.total = data.getTotal();
-    Array.from(items.getTable().values()).forEach((item) => {
-      dataTable.push({
-        code: item.getProduct().getCode(),
-        name: item.getProduct().getName(),
-        quantity: item.getQuantity(),
-        unitPrice: item.getProduct().getPublicPrice(),
-        subtotal: item.getTotalPrice(),
-        iva: item.getTotalPrice(),
-        totalPrice: item.getTotalPrice()
+      printTable(
+        dataTable,
+        headersColumns,
+        title,
+        customer,
+        undefined,
+        footerDetails
+      );
+    } else if (data instanceof CartRequest) {
+      const customer: CustomerRequest = data.customer;
+      const items: HashMap<string, CartItemRequest> = data.cartItems;
+      footerDetails.subtotal = data.subtotal!;
+      footerDetails.iva = data.iva!;
+      footerDetails.total = data.total!;
+      Array.from(items.getTable().values()).forEach((item) => {
+        dataTable.push({
+          code: item.product.code,
+          name: item.product.name,
+          quantity: item.quantity.toFixed(0),
+          unitPrice: item.product.publicPrice!.toFixed(2),
+          subtotal: item.subtotal!.toFixed(2),
+          iva: item.iva!.toFixed(2),
+          totalPrice: item.totalPrice!.toFixed(2)
+        });
       });
-    });
-    printTable(
-      dataTable,
-      headersColumns,
-      title,
-      customer,
-      undefined,
-      footerDetails
-    );
-  } else if (data instanceof CartRequest) {
-    const customer: CustomerRequest = data.customer;
-    const items: HashMap<string, CartItemRequest> = data.cartItems;
-    footerDetails.subtotal = data.subtotal!;
-    footerDetails.iva = data.iva!;
-    footerDetails.total = data.total!;
-    Array.from(items.getTable().values()).forEach((item) => {
-      dataTable.push({
-        code: item.product.code,
-        name: item.product.name,
-        quantity: item.quantity,
-        unitPrice: item.product.publicPrice!,
-        subtotal: item.quantity,
-        iva: item.quantity,
-        totalPrice: item.quantity
+      printTable(
+        dataTable,
+        headersColumns,
+        title,
+        customer,
+        undefined,
+        footerDetails
+      );
+    } else if ('idCart' in data) {
+      const customer: CustomerResponse = data.customer;
+      const items: CartItemResponse[] = data.cartItems;
+      footerDetails.subtotal = data.subtotal;
+      footerDetails.iva = data.iva;
+      footerDetails.total = data.total;
+      items.forEach((item) => {
+        dataTable.push({
+          code: item.product.code,
+          name: item.product.name,
+          quantity: item.quantity.toFixed(1),
+          unitPrice: item.unitPrice.toFixed(2),
+          subtotal: item.subtotal.toFixed(2),
+          iva: item.iva.toFixed(2),
+          totalPrice: item.totalPrice.toFixed(2)
+        });
       });
-    });
-    printTable(
-      dataTable,
-      headersColumns,
-      title,
-      customer,
-      undefined,
-      footerDetails
-    );
-  } else if ('idCart' in data) {
-    const customer: CustomerResponse = data.customer;
-    const items: CartItemResponse[] = data.cartItems;
-    footerDetails.subtotal = data.subtotal;
-    footerDetails.iva = data.iva;
-    footerDetails.total = data.total;
-    items.forEach((item) => {
-      dataTable.push({
-        code: item.product.code,
-        name: item.product.name,
-        quantity: item.quantity,
-        unitPrice: item.product.publicPrice,
-        subtotal: item.product.publicPrice,
-        iva: item.product.publicPrice,
-        totalPrice: item.product.publicPrice
+      printTable(
+        dataTable,
+        headersColumns,
+        title,
+        customer,
+        undefined,
+        footerDetails
+      );
+    } else if ('idInvoice' in data) {
+      const customer: CustomerResponse = data.cart.customer;
+      const seller: SellerResponse = data.seller;
+      const items: CartItemResponse[] = data.cart.cartItems;
+      footerDetails.subtotal = data.subtotal;
+      footerDetails.iva = data.iva;
+      footerDetails.total = data.total;
+      items.forEach((item) => {
+        dataTable.push({
+          code: item.product.code,
+          name: item.product.name,
+          quantity: item.quantity.toFixed(0),
+          unitPrice: item.unitPrice.toFixed(2),
+          subtotal: item.subtotal.toFixed(2),
+          iva: item.iva.toFixed(2),
+          totalPrice: item.totalPrice.toFixed(2)
+        });
       });
-    });
-    printTable(
-      dataTable,
-      headersColumns,
-      title,
-      customer,
-      undefined,
-      footerDetails
-    );
+      printTable(
+        dataTable,
+        headersColumns,
+        title,
+        customer,
+        seller,
+        footerDetails
+      );
+    } else {
+      console.error(ShowMessage.message(`Type unknown!`, 'error', true));
+    }
   } else {
-    console.error('Type unknown');
+    console.log(ShowMessage.message(`No records found!`, 'error', true));
   }
 };

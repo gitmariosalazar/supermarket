@@ -78,7 +78,13 @@ export const printTable = (
   console.log(divider);
   // CENTER TITLE
   const centeredTitle = title.padStart((totalWidth + title.length) / 2, ' ');
-  console.log(ShowMessage.message(centeredTitle, 'success', true));
+  console.log(
+    ShowMessage.message(
+      chalk.bold.cyan(centeredTitle.toLocaleUpperCase()),
+      'title',
+      true
+    )
+  );
 
   if (customer || seller) {
     console.log(divider);
@@ -98,7 +104,7 @@ export const printTable = (
   headersColumns.forEach((header, i) => {
     headerLine += ` ${header.padEnd(columnWidths[i], ' ')} |`;
   });
-  console.log(ShowMessage.message(headerLine, 'info', true));
+  console.log(ShowMessage.message(headerLine, 'title', true));
   console.log(divider);
   if (dataTable.length > 0) {
     // Rows

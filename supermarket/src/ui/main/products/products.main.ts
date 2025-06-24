@@ -4,6 +4,7 @@ import { ProductRequest } from '../../../modules/products/domain/schemas/dto/req
 import { ProductCategoryResponse } from '../../../modules/products/domain/schemas/dto/response/product-category.response';
 import { ProductResponse } from '../../../modules/products/domain/schemas/dto/response/product.response';
 import {
+  isPositiveNumberMinLimitPrompt,
   isPositiveNumberPrompt,
   promptNonEmptyString
 } from '../../../shared/validators/input-validator';
@@ -12,14 +13,14 @@ import {
   printProductsTable
 } from '../../components/form/print.custom.table';
 import { ShowMessage } from '../../messages/message.util';
-import readlineSync from 'readline-sync';
+import { pause } from '../../utils/readline/read-line';
 
 export class ProductsMain {
   constructor(private readonly appFactory: AppFactory) {}
-  main(message: string) {
+  async main(): Promise<void> {
     const options: string = `${ShowMessage.message(
       `WELCOME TO THE PRODUCTS MODULE`,
-      'info',
+      'title',
       true
     )}\nChoose an option:
       1. ${ShowMessage.message('Add product', 'success', true)}
@@ -29,41 +30,49 @@ export class ProductsMain {
       5. ${ShowMessage.message('Stock Warning products', 'success', true)}
       6. ${ShowMessage.message('Filter products in Stock', 'success', true)}
       7. ${ShowMessage.message('Filter by category', 'success', true)}
-      8. ${ShowMessage.message('Back to main', 'success', true)}`;
+      8. ${ShowMessage.message('See Unpurchased Products', 'success', true)}
+      9. ${ShowMessage.message('See Purchased Products', 'success', true)}
+      10. ${ShowMessage.message('Back to main', 'back', true)}`;
     let option: number = 0;
-    const endOption: number = 8;
+    const endOption: number = 10;
 
     while (true) {
       console.clear();
       console.log(options);
 
-      option = isPositiveNumberPrompt(message);
+      option = isPositiveNumberPrompt('Choose an option: ');
 
       const isValidOption: boolean = option > 0 && option < endOption;
 
       if (isValidOption && option < endOption) {
         if (option === 1) {
-          this.addProductOption();
+          await this.addProductOption();
         }
         if (option === 2) {
-          this.updateProductOption();
+          await this.updateProductOption();
         }
         if (option === 3) {
-          this.listProductOption();
+          await this.listProductOption();
         }
         if (option === 4) {
-          this.searchProductOption();
+          await this.searchProductOption();
         }
         if (option === 5) {
-          this.listProductsWarningStock();
+          await this.listProductsWarningStock();
         }
         if (option === 6) {
-          this.listProductsBetweenStock();
+          await this.listProductsBetweenStock();
         }
         if (option === 7) {
-          this.filterProductsByCategoriesOption();
+          await this.filterProductsByCategoriesOption();
         }
-        readlineSync.question('Press Enter to return to the menu...');
+        if (option === 8) {
+          await this.seeUnpurchasedProductsOption();
+        }
+        if (option === 9) {
+          await this.seePurchasedProductsOption();
+        }
+        await pause();
       } else if (option > endOption) {
         console.log(
           ShowMessage.message(
@@ -72,7 +81,7 @@ export class ProductsMain {
             true
           )
         );
-        readlineSync.question('Press Enter to return to the menu...');
+        await pause();
       }
 
       if (option === endOption) {
@@ -88,17 +97,17 @@ export class ProductsMain {
     }
   }
 
-  private filterProductsByCategoriesOption(): void {
+  private async filterProductsByCategoriesOption(): Promise<void> {
     console.log(ShowMessage.message('Filtering Products by Category'));
     let categoryName: string;
     while (true) {
       categoryName = promptNonEmptyString('Enter the category name: ');
       const categoryByName: ProductCategoryResponse | null =
-        this.appFactory.productCategoryController.findProductCategoryByName(
+        await this.appFactory.productCategoryController.findProductCategoryByName(
           categoryName
         );
       const productsFound: ProductResponse[] =
-        this.appFactory.productController.findProductByCategoryName(
+        await this.appFactory.productController.findProductByCategoryName(
           categoryName
         );
       if (productsFound.length > 0) {
@@ -118,7 +127,7 @@ export class ProductsMain {
         break;
       } else {
         const categories: ProductCategoryResponse[] =
-          this.appFactory.productCategoryController.findAllProductCategories();
+          await this.appFactory.productCategoryController.findAllProductCategories();
         console.log(
           ShowMessage.message(
             'Category not found. Please choose the following categories',
@@ -131,9 +140,33 @@ export class ProductsMain {
     }
   }
 
-  private listProductsWarningStock(): void {
+  private async seePurchasedProductsOption(): Promise<void> {
     const productsFound: ProductResponse[] =
-      this.appFactory.productController.findProductWarningStock();
+      await this.appFactory.productController.findPurchasedProducts();
+    if (productsFound.length > 0) {
+      printProductsTable(productsFound, 'Products List Purchased Products');
+    } else {
+      console.log(
+        ShowMessage.message(`Purchased Products is empty!`, 'info', true)
+      );
+    }
+  }
+
+  private async seeUnpurchasedProductsOption(): Promise<void> {
+    const productsFound: ProductResponse[] =
+      await this.appFactory.productController.findUnpurchasedProducts();
+    if (productsFound.length > 0) {
+      printProductsTable(productsFound, 'Products List Unpurchased Products');
+    } else {
+      console.log(
+        ShowMessage.message(`Unpurchased Products is empty!`, 'info', true)
+      );
+    }
+  }
+
+  private async listProductsWarningStock(): Promise<void> {
+    const productsFound: ProductResponse[] =
+      await this.appFactory.productController.findProductWarningStock();
     if (productsFound.length > 0) {
       printProductsTable(productsFound, 'Products List in Warning Stock');
     } else {
@@ -143,7 +176,7 @@ export class ProductsMain {
     }
   }
 
-  private listProductsBetweenStock(): void {
+  private async listProductsBetweenStock(): Promise<void> {
     let startStock: number;
     let endStock: number;
 
@@ -153,7 +186,7 @@ export class ProductsMain {
       const isValid: boolean = startStock < endStock;
       if (isValid) {
         const productsFound: ProductResponse[] =
-          this.appFactory.productController.findProductsBetweenStock(
+          await this.appFactory.productController.findProductsBetweenStock(
             startStock,
             endStock
           );
@@ -184,18 +217,22 @@ export class ProductsMain {
     }
   }
 
-  private listProductOption(): void {
+  private async listProductOption(): Promise<void> {
     const productsResponse: ProductResponse[] =
-      this.appFactory.productController.findAllProducts();
-    printProductsTable(productsResponse, 'list of products in the database');
+      await this.appFactory.productController.findAllProducts();
+    if (!productsResponse || productsResponse.length === 0) {
+      console.log(ShowMessage.message('No products found.', 'info', true));
+    } else {
+      printProductsTable(productsResponse, 'List Products');
+    }
   }
 
-  private searchProductOption(): void {
+  private async searchProductOption(): Promise<void> {
     const code: string = promptNonEmptyString(
       'Enter the product code to search: '
     );
     const productFound: ProductResponse | null =
-      this.appFactory.productController.findProductByCode(code);
+      await this.appFactory.productController.findProductByCode(code);
     if (productFound !== null) {
       printProductsTable(
         [productFound],
@@ -212,22 +249,25 @@ export class ProductsMain {
     }
   }
 
-  private updateProductOption(): void {
-    console.clear();
-    console.log(
-      ShowMessage.message(
-        'Enter the information about the product you want to update',
-        'info',
-        true
-      )
-    );
-
+  private async updateProductOption(): Promise<void> {
+    //console.clear();
     let code: string = '';
     while (true) {
       code = promptNonEmptyString('Enter the product code to search: ');
       const productFound: ProductResponse | null =
-        this.appFactory.productController.findProductByCode(code);
+        await this.appFactory.productController.findProductByCode(code);
       if (productFound !== null) {
+        printProductsTable(
+          [productFound],
+          `Product with code: ${code} was found successfully!`
+        );
+        console.log(
+          ShowMessage.message(
+            'Enter the information about the product you want to update',
+            'info',
+            true
+          )
+        );
         const name: string = promptNonEmptyString('Enter the new Name: ');
         const description: string = promptNonEmptyString(
           'Enter the new description: '
@@ -237,7 +277,7 @@ export class ProductsMain {
         while (true) {
           category = promptNonEmptyString('Enter the product category: ');
           const categoryFound: ProductCategoryResponse | null =
-            this.appFactory.productCategoryController.findProductCategoryByName(
+            await this.appFactory.productCategoryController.findProductCategoryByName(
               category
             );
           if (categoryFound !== null) {
@@ -256,14 +296,17 @@ export class ProductsMain {
               )
             );
             const categoriesResponse: ProductCategoryResponse[] | null =
-              this.appFactory.productCategoryController.findAllProductCategories();
+              await this.appFactory.productCategoryController.findAllProductCategories();
             printProductCategoriesTable(
               categoriesResponse,
               'Products Categories to choose'
             );
           }
         }
-        const iva: number = isPositiveNumberPrompt('Enter the product IVA: ');
+        const iva: number = isPositiveNumberMinLimitPrompt(
+          'Enter the product IVA: ',
+          0
+        );
         const stock: number = isPositiveNumberPrompt(
           'Enter the product stock: '
         );
@@ -280,19 +323,26 @@ export class ProductsMain {
           supplierPrice
         );
         const productResponseUpdated: ProductResponse | null =
-          this.appFactory.productController.updateProduct(code, productRequest);
+          await this.appFactory.productController.updateProduct(
+            code,
+            productRequest
+          );
         if (productResponseUpdated !== null) {
           printProductsTable(
             [productResponseUpdated],
             `Product with code: ${code} updated`
           );
           console.log(
-            ShowMessage.message('✅ Product was updated successfully!')
+            ShowMessage.message(
+              'Product was updated successfully!',
+              'success',
+              true
+            )
           );
         } else {
           console.log(
             ShowMessage.message(
-              '❌ Error. The product could not be updated',
+              'Error. The product could not be updated',
               'error',
               true
             )
@@ -311,7 +361,7 @@ export class ProductsMain {
     }
   }
 
-  private addProductOption(): void {
+  private async addProductOption(): Promise<void> {
     console.clear();
     console.log(
       ShowMessage.message(
@@ -331,7 +381,7 @@ export class ProductsMain {
     while (true) {
       category = promptNonEmptyString('Enter the product category: ');
       const categoryFound: ProductCategoryResponse | null =
-        this.appFactory.productCategoryController.findProductCategoryByName(
+        await this.appFactory.productCategoryController.findProductCategoryByName(
           category
         );
       if (categoryFound !== null) {
@@ -346,14 +396,17 @@ export class ProductsMain {
           ShowMessage.message('Category product not found!', 'warning', true)
         );
         const categoriesResponse: ProductCategoryResponse[] | null =
-          this.appFactory.productCategoryController.findAllProductCategories();
+          await this.appFactory.productCategoryController.findAllProductCategories();
         printProductCategoriesTable(
           categoriesResponse,
           'Products Categories to choose'
         );
       }
     }
-    const iva: number = isPositiveNumberPrompt('Enter the product IVA: ');
+    const iva: number = isPositiveNumberMinLimitPrompt(
+      'Enter the product IVA: ',
+      0
+    );
     const stock: number = isPositiveNumberPrompt('Enter the product stock: ');
     const supplierPrice: number = isPositiveNumberPrompt(
       'Enter the supplier price: '
@@ -368,28 +421,19 @@ export class ProductsMain {
       supplierPrice
     );
     const productResponseCreated: ProductResponse | null =
-      this.appFactory.productController.createProduct(productRequest);
+      await this.appFactory.productController.createProduct(productRequest);
     if (productResponseCreated !== null) {
-      console.log(
-        ShowMessage.message(
-          `
-      Product Code: ${productResponseCreated.code}
-      Product Name: ${productResponseCreated.name}
-      Product Description: ${productResponseCreated.description}
-      Product IVA: ${productResponseCreated.iva}
-      Product Public Price: ${productResponseCreated.publicPrice}
-      Product Supplier Price: ${productResponseCreated.supplierPrice}
-      Product Category: ${productResponseCreated.category.name}
-      Product Stock: ${productResponseCreated.stock}
-      `,
-          'info'
-        )
+      printProductsTable(
+        [productResponseCreated],
+        'New product was added successfully!'
       );
-      console.log(ShowMessage.message('✅ Product was added successfully!'));
+      console.log(
+        ShowMessage.message('Product was added successfully!', 'success', true)
+      );
     } else {
       console.log(
         ShowMessage.message(
-          '❌ Error. The product could not be added',
+          'Error. The product could not be added',
           'error',
           true
         )
@@ -397,7 +441,3 @@ export class ProductsMain {
     }
   }
 }
-
-const appFactory: AppFactory = new AppFactory();
-const productsMain: ProductsMain = new ProductsMain(appFactory);
-productsMain.main('Choose a option: ');

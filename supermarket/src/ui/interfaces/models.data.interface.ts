@@ -2,11 +2,11 @@ export interface ProductData {
   code: string;
   name: string;
   description: string;
-  iva: number;
+  iva: string;
   category: string;
-  stock: number;
-  publicPrice: number;
-  supplierPrice: number;
+  stock: string;
+  publicPrice: string;
+  supplierPrice: string;
 }
 
 export interface CustomerData {
@@ -22,7 +22,7 @@ export interface CustomerData {
 export interface SellerData {
   idSeller: string;
   hireDate: Date | string;
-  salary: number;
+  salary: string;
   cardId: string;
   fullName: string;
   email: string;
@@ -33,23 +33,35 @@ export interface SellerData {
 export interface ItemData {
   code: string;
   name: string;
-  quantity: number;
-  unitPrice: number;
-  subtotal: number;
-  iva: number;
-  totalPrice: number;
+  quantity: string;
+  unitPrice: string;
+  subtotal: string;
+  iva: string;
+  totalPrice: string;
 }
 
 export interface ListData {
-  id: number;
+  id: string;
   idSeller?: string;
   seller?: string;
   idCustomer?: string;
   customer?: string;
   date: Date | string;
-  subtotal: number;
-  iva: number;
-  total: number;
+  subtotal: string;
+  iva: string;
+  total: string;
+}
+
+export interface ListQueueData {
+  id: string;
+  idCustomer?: string;
+  customer?: string;
+  date: Date | string;
+  subtotal: string;
+  iva: string;
+  total: string;
+  priority: string;
+  turn: string;
 }
 
 export interface FooterDetails {

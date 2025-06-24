@@ -8,12 +8,12 @@ import {
 } from '../../../shared/validators/input-validator';
 import { printCustomersTable } from '../../components/form/print.custom.table';
 import { ShowMessage } from '../../messages/message.util';
-import readlineSync from 'readline-sync';
+import { pause } from '../../utils/readline/read-line';
 
 export class CustomerMain {
   constructor(private readonly appFactory: AppFactory) {}
 
-  main(message: string) {
+  async main() {
     let options: string = `${ShowMessage.message(
       `WELCOME TO THE CUSTOMERS MODULE`,
       'info',
@@ -23,30 +23,29 @@ export class CustomerMain {
     2. ${ShowMessage.message(`Update Customer`, 'success', true)}
     3. ${ShowMessage.message(`Search Customer`, 'success', true)}
     4. ${ShowMessage.message(`Customers List`, 'success', true)}
-    5. ${ShowMessage.message(`Back to Main`, 'success', true)}
+    5. ${ShowMessage.message(`Back to Main`, 'back', true)}
     `;
     let option: number;
-    const endOption: number = 5;
     while (true) {
       console.clear();
       console.log(options);
-      option = isPositiveNumberPrompt(message);
+      option = isPositiveNumberPrompt('Choose an option: ');
       const endOption: number = 5;
       const isValidOption: boolean = option > 0 && option < endOption;
       if (isValidOption) {
         if (option === 1) {
-          this.addCustomerOption();
+          await this.addCustomerOption();
         }
         if (option === 2) {
-          this.updateCustomerOption();
+          await this.updateCustomerOption();
         }
         if (option === 3) {
-          this.searchCustomerOption();
+          await this.searchCustomerOption();
         }
         if (option === 4) {
-          this.listCustomersOption();
+          await this.listCustomersOption();
         }
-        readlineSync.question('Press Enter to return to the menu...');
+        await pause();
       } else if (option > endOption) {
         console.log(
           ShowMessage.message(
@@ -55,7 +54,7 @@ export class CustomerMain {
             true
           )
         );
-        readlineSync.question('Press Enter to return to the menu...');
+        await pause();
       }
       if (option === endOption) {
         console.log(
@@ -70,20 +69,20 @@ export class CustomerMain {
     }
   }
 
-  private listCustomersOption(): void {
+  private async listCustomersOption(): Promise<void> {
     console.clear();
     console.log(ShowMessage.message(`Find All Customers`, 'info', true));
     const customers: CustomerResponse[] =
-      this.appFactory.customerController.findAllCustomers();
+      await this.appFactory.customerController.findAllCustomers();
     printCustomersTable(customers, `Customer List`);
   }
 
-  private searchCustomerOption(): void {
+  private async searchCustomerOption(): Promise<void> {
     console.clear();
     console.log(ShowMessage.message(`Search customer`, 'info', true));
     const idCustomer: string = promptNonEmptyString('Enter the customer ID: ');
     const customerFound: CustomerResponse | null =
-      this.appFactory.customerController.findCustomerById(idCustomer);
+      await this.appFactory.customerController.findCustomerById(idCustomer);
     if (customerFound !== null) {
       printCustomersTable([customerFound], `Customer with ID: ${idCustomer}`);
     } else {
@@ -97,16 +96,23 @@ export class CustomerMain {
     }
   }
 
-  private updateCustomerOption(): void {
-    console.clear();
-    console.log(ShowMessage.message('Update customer', 'error', true));
+  private async updateCustomerOption(): Promise<void> {
+    //console.clear();
     let idCustomer: string;
 
     while (true) {
       idCustomer = promptNonEmptyString('Enter the ID Customer: ');
       const customerFound: CustomerResponse | null =
-        this.appFactory.customerController.findCustomerById(idCustomer);
+        await this.appFactory.customerController.findCustomerById(idCustomer);
       if (customerFound !== null) {
+        printCustomersTable([customerFound], `Customer with ID: ${idCustomer}`);
+        console.log(
+          ShowMessage.message(
+            'Enter the information about the Customer you want to update',
+            'info',
+            true
+          )
+        );
         const birthDate: string = isValidDatePrompt(
           'Enter the birth date (YYYY-MM-DD): '
         );
@@ -129,7 +135,7 @@ export class CustomerMain {
           phone
         );
         const customerCreated: CustomerResponse | null =
-          this.appFactory.customerController.updateCustomer(
+          await this.appFactory.customerController.updateCustomer(
             idCustomer,
             customerRequest
           );
@@ -160,7 +166,7 @@ export class CustomerMain {
     }
   }
 
-  public addCustomerOption(): void {
+  public async addCustomerOption(): Promise<void> {
     console.clear();
     console.log(ShowMessage.message('Add customer', 'info', true));
     let idCustomer: string;
@@ -168,7 +174,7 @@ export class CustomerMain {
     while (true) {
       idCustomer = promptNonEmptyString('Enter the ID Customer: ');
       const customerFound: CustomerResponse | null =
-        this.appFactory.customerController.findCustomerById(idCustomer);
+        await this.appFactory.customerController.findCustomerById(idCustomer);
       if (customerFound === null) {
         const birthDate: string = isValidDatePrompt(
           'Enter the birth date (YYYY-MM-DD): '
@@ -192,7 +198,9 @@ export class CustomerMain {
           phone
         );
         const customerCreated: CustomerResponse | null =
-          this.appFactory.customerController.createCustomer(customerRequest);
+          await this.appFactory.customerController.createCustomer(
+            customerRequest
+          );
         if (customerCreated !== null) {
           console.log(
             ShowMessage.message(
@@ -220,7 +228,3 @@ export class CustomerMain {
     }
   }
 }
-
-const appFactory: AppFactory = new AppFactory();
-const customerMain: CustomerMain = new CustomerMain(appFactory);
-customerMain.main('Choose a option: ');
