@@ -65,7 +65,7 @@ Before you begin, ensure you have the following installed:
    Use `SELLER001` or `SELLER002` to start The Application
 
 3. **Output**
-   ![alt text](image.png)
+   ![alt text](supermarket/assets/images/image.png)
 
 ## 📂 Folder Structure
 
@@ -135,7 +135,7 @@ The **Supermarket** project adopts the **Clean Architecture** pattern to ensure 
   - `controllers/` handles API requests and responses.
   - `repositories/` provides data access, with subdirectories like `mockup/`, `mysql/`, `postgres/`, and `sqlserver/` supporting multiple persistence options.
 
-![alt text](image-1.png)
+![alt text](supermarket/assets/images/image-1.png)
 
 ### Benefits
 
