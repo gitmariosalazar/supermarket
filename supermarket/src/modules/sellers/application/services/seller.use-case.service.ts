@@ -7,15 +7,15 @@ import { InterfaceUseCaseSeller } from '../usecases/seller.use-case.interface';
 export class SellerService implements InterfaceUseCaseSeller {
   constructor(private readonly sellerRepository: InterfaceSellerRepository) {}
 
-  findAllSellers(): SellerResponse[] {
+  findAllSellers(): Promise<SellerResponse[]> {
     return this.sellerRepository.findAllSellers();
   }
 
-  findSellerById(idSeller: string): SellerResponse | null {
+  findSellerById(idSeller: string): Promise<SellerResponse | null> {
     return this.sellerRepository.findSellerById(idSeller);
   }
 
-  createSeller(sellerRequest: SellerRequest): SellerResponse | null {
+  createSeller(sellerRequest: SellerRequest): Promise<SellerResponse | null> {
     return this.sellerRepository.createSeller(
       SellerMapper.sellerRequestToSellerModel(sellerRequest)
     );
@@ -24,7 +24,7 @@ export class SellerService implements InterfaceUseCaseSeller {
   updateSeller(
     idSeller: string,
     sellerRequest: SellerRequest
-  ): SellerResponse | null {
+  ): Promise<SellerResponse | null> {
     return this.sellerRepository.updateSeller(
       idSeller,
       SellerMapper.sellerRequestToSellerModel(sellerRequest)

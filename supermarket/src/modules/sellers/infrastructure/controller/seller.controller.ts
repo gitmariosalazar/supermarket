@@ -5,22 +5,22 @@ import { SellerResponse } from '../../domain/schemas/dto/response/seller.respons
 export class SellerController {
   constructor(private readonly sellerService: SellerService) {}
 
-  findAllSellers(): SellerResponse[] {
+  findAllSellers(): Promise<SellerResponse[]> {
     return this.sellerService.findAllSellers();
   }
 
-  findSellerById(idSeller: string): SellerResponse | null {
+  findSellerById(idSeller: string): Promise<SellerResponse | null> {
     return this.sellerService.findSellerById(idSeller);
   }
 
-  createSeller(sellerRequest: SellerRequest): SellerResponse | null {
+  createSeller(sellerRequest: SellerRequest): Promise<SellerResponse | null> {
     return this.sellerService.createSeller(sellerRequest);
   }
 
   updateSeller(
     idSeller: string,
     sellerRequest: SellerRequest
-  ): SellerResponse | null {
+  ): Promise<SellerResponse | null> {
     return this.sellerService.updateSeller(idSeller, sellerRequest);
   }
 }

@@ -9,13 +9,13 @@ export class SellerRepositoryMockupImplementation
 {
   constructor(private readonly databaseMockup: DatabaseMockup) {}
 
-  findAllSellers(): SellerResponse[] {
+  async findAllSellers(): Promise<SellerResponse[]> {
     return Array.from(this.databaseMockup.getSellers().getTable().values()).map(
       SellerAdapter.sellerModelToSellerResponse
     );
   }
 
-  findSellerById(idSeller: string): SellerResponse | null {
+  async findSellerById(idSeller: string): Promise<SellerResponse | null> {
     const sellerFound: SellerModel | undefined = this.databaseMockup
       .getSellers()
       .find(idSeller);
@@ -24,7 +24,7 @@ export class SellerRepositoryMockupImplementation
       : null;
   }
 
-  createSeller(sellerModel: SellerModel): SellerResponse | null {
+  async createSeller(sellerModel: SellerModel): Promise<SellerResponse | null> {
     const createdSeller: SellerModel | undefined = this.databaseMockup
       .getSellers()
       .add(sellerModel.getIdSeller(), sellerModel);
@@ -33,10 +33,10 @@ export class SellerRepositoryMockupImplementation
       : null;
   }
 
-  updateSeller(
+  async updateSeller(
     idSeller: string,
     sellerModel: SellerModel
-  ): SellerResponse | null {
+  ): Promise<SellerResponse | null> {
     const updatedSeller: SellerModel | undefined = this.databaseMockup
       .getSellers()
       .update(idSeller, sellerModel);
