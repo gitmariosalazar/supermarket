@@ -2,13 +2,15 @@ import { ProductCategoryRequest } from '../../domain/schemas/dto/request/product
 import { ProductCategoryResponse } from '../../domain/schemas/dto/response/product-category.response';
 
 export interface InterfaceUseCaseProductCategory {
-  findAllProductCategories(): ProductCategoryResponse[];
-  findProductCategoryByName(name: string): ProductCategoryResponse | null;
+  findAllProductCategories(): Promise<ProductCategoryResponse[]>;
+  findProductCategoryByName(
+    name: string
+  ): Promise<ProductCategoryResponse | null>;
   createProductCategory(
-    productCategoryModel: ProductCategoryRequest
-  ): ProductCategoryResponse | null;
+    productCategoryRequest: ProductCategoryRequest
+  ): Promise<ProductCategoryResponse | null>;
   updateProductCategory(
     name: string,
-    productCategoryModel: ProductCategoryRequest
-  ): ProductCategoryResponse | null;
+    productCategoryRequest: ProductCategoryRequest
+  ): Promise<ProductCategoryResponse | null>;
 }

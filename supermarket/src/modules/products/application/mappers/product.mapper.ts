@@ -15,7 +15,7 @@ export class ProductMapper {
         productRequest.category
       ),
       productRequest.stock,
-      0,
+      productRequest.publicPrice!,
       productRequest.supplierPrice
     );
     return productModel;

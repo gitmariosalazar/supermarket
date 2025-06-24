@@ -36,7 +36,8 @@ export class ProductAdapter {
         productResponse.category
       ),
       productResponse.stock,
-      productResponse.supplierPrice
+      productResponse.supplierPrice,
+      productResponse.publicPrice
     );
     return productRequest;
   }

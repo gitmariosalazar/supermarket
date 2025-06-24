@@ -1,3 +1,4 @@
+import { increasedPercentage } from '../../../../settings/environments/environments';
 import { InterfaceProductRepository } from '../../domain/contracts/product.repository.interface';
 import { ProductRequest } from '../../domain/schemas/dto/request/product.request';
 import { ProductResponse } from '../../domain/schemas/dto/response/product.response';
@@ -11,42 +12,61 @@ export class ProductService implements InterfaceUseCaseProduct {
     this.productRepository = productRepository;
   }
 
-  findProductsByCategoryName(categoryName: string): ProductResponse[] {
-    return this.productRepository.findProductsByCategoryName(categoryName)
-  }
-  findAllProducts(): ProductResponse[] {
-    return this.productRepository.findAllProducts();
+  async findUnpurchasedProducts(): Promise<ProductResponse[]> {
+    return await this.productRepository.findUnpurchasedProducts();
   }
 
-  findProductByCode(code: string): ProductResponse | null {
-    return this.productRepository.findProductByCode(code);
+  async findPurchasedProducts(): Promise<ProductResponse[]> {
+    return await this.productRepository.findPurchasedProducts();
   }
 
-  createProduct(productRequest: ProductRequest): ProductResponse | null {
+  async findProductsByCategoryName(
+    categoryName: string
+  ): Promise<ProductResponse[]> {
+    return await this.productRepository.findProductsByCategoryName(
+      categoryName
+    );
+  }
+  async findAllProducts(): Promise<ProductResponse[]> {
+    return await this.productRepository.findAllProducts();
+  }
+
+  async findProductByCode(code: string): Promise<ProductResponse | null> {
+    return await this.productRepository.findProductByCode(code);
+  }
+
+  async createProduct(
+    productRequest: ProductRequest
+  ): Promise<ProductResponse | null> {
     const productModel: ProductModel =
       ProductMapper.productRequestToProductModel(productRequest);
-    productModel.setPublicPrice(0);
-    return this.productRepository.createProduct(productModel);
+    productModel.setPublicPrice(
+      (productModel.getSupplierPrice() * (100 + increasedPercentage)) / 100
+    );
+    return await this.productRepository.createProduct(productModel);
   }
 
-  updateProduct(
+  async updateProduct(
     code: string,
     productRequest: ProductRequest
-  ): ProductResponse | null {
-    const productModelToUpdate: ProductModel =
+  ): Promise<ProductResponse | null> {
+    const productModel: ProductModel =
       ProductMapper.productRequestToProductModel(productRequest);
-    return this.productRepository.updateProduct(code, productModelToUpdate);
+    productModel.setPublicPrice(
+      (productModel.getSupplierPrice() * (100 + increasedPercentage)) / 100
+    );
+    return await this.productRepository.updateProduct(code, productModel);
   }
 
-  findProductWarningStock(): ProductResponse[] {
-    return this.productRepository.findProductWarningStock();
+  async findProductWarningStock(): Promise<ProductResponse[]> {
+    return await this.productRepository.findProductWarningStock();
   }
 
-  findProductsBetweenStock(
+  async findProductsBetweenStock(
     startStock: number,
     endStock: number
-  ): ProductResponse[] {
-    return this.productRepository.findProductsBetweenStock(
+  ): Promise<ProductResponse[]> {
+    return await this.productRepository.findProductsBetweenStock(
       startStock,
       endStock
     );

@@ -6,27 +6,29 @@ export class ProductCategoryController {
   constructor(
     private readonly productCategoryService: ProductCategoryService
   ) {}
-  findAllProductCategories(): ProductCategoryResponse[] {
-    return this.productCategoryService.findAllProductCategories();
+  async findAllProductCategories(): Promise<ProductCategoryResponse[]> {
+    return await this.productCategoryService.findAllProductCategories();
   }
 
-  findProductCategoryByName(name: string): ProductCategoryResponse | null {
-    return this.productCategoryService.findProductCategoryByName(name);
+  async findProductCategoryByName(
+    name: string
+  ): Promise<ProductCategoryResponse | null> {
+    return await this.productCategoryService.findProductCategoryByName(name);
   }
 
-  createProductCategory(
+  async createProductCategory(
     productCategoryRequest: ProductCategoryRequest
-  ): ProductCategoryResponse | null {
-    return this.productCategoryService.createProductCategory(
+  ): Promise<ProductCategoryResponse | null> {
+    return await this.productCategoryService.createProductCategory(
       productCategoryRequest
     );
   }
 
-  updateProductCategory(
+  async updateProductCategory(
     name: string,
     productCategoryRequest: ProductCategoryRequest
-  ): ProductCategoryResponse | null {
-    return this.productCategoryService.updateProductCategory(
+  ): Promise<ProductCategoryResponse | null> {
+    return await this.productCategoryService.updateProductCategory(
       name,
       productCategoryRequest
     );

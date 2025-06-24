@@ -10,13 +10,15 @@ export class ProductCategoryMockupImplementation
 {
   constructor(private readonly databaseMockup: DatabaseMockup) {}
 
-  findAllProductCategories(): ProductCategoryResponse[] {
+  async findAllProductCategories(): Promise<ProductCategoryResponse[]> {
     return Array.from(
       this.databaseMockup.getCategories().getTable().values()
     ).map(ProductCategoryAdapter.productCategoryModelToProductCategoryResponse);
   }
 
-  findProductCategoryByName(name: string): ProductCategoryResponse | null {
+  async findProductCategoryByName(
+    name: string
+  ): Promise<ProductCategoryResponse | null> {
     const categoryFound: ProductCategoryModel | undefined = this.databaseMockup
       .getCategories()
       .find(name);
@@ -27,9 +29,9 @@ export class ProductCategoryMockupImplementation
       : null;
   }
 
-  createProductCategory(
+  async createProductCategory(
     productCategoryModel: ProductCategoryModel
-  ): ProductCategoryResponse | null {
+  ): Promise<ProductCategoryResponse | null> {
     const categoryCreated: ProductCategoryModel | undefined =
       this.databaseMockup
         .getCategories()
@@ -41,12 +43,14 @@ export class ProductCategoryMockupImplementation
       : null;
   }
 
-  updateProductCategory(
+  async updateProductCategory(
     name: string,
     productCategoryModel: ProductCategoryModel
-  ): ProductCategoryResponse | null {
+  ): Promise<ProductCategoryResponse | null> {
     const categoryCreated: ProductCategoryModel | undefined =
-      this.databaseMockup.getCategories().update(name, productCategoryModel);
+      await this.databaseMockup
+        .getCategories()
+        .update(name, productCategoryModel);
     return categoryCreated !== undefined
       ? ProductCategoryAdapter.productCategoryModelToProductCategoryResponse(
           categoryCreated

@@ -17,7 +17,8 @@ export class ProductRequest {
     iva: number,
     category: ProductCategoryRequest,
     stock: number,
-    supplierPrice: number
+    supplierPrice: number,
+    publicPrice?: number
   ) {
     this.code = code;
     this.name = name;
@@ -26,6 +27,6 @@ export class ProductRequest {
     this.category = category;
     this.stock = stock;
     this.supplierPrice = supplierPrice;
-    this.publicPrice = 0;
+    this.publicPrice = publicPrice;
   }
 }

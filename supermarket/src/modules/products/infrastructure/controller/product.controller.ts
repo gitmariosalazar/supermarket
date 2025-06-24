@@ -4,37 +4,49 @@ import { ProductResponse } from '../../domain/schemas/dto/response/product.respo
 
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
-  findAllProducts(): ProductResponse[] {
-    return this.productService.findAllProducts();
+  async findAllProducts(): Promise<ProductResponse[]> {
+    return await this.productService.findAllProducts();
   }
 
-  findProductByCategoryName(categoryName: string): ProductResponse[] {
-    return this.productService.findProductsByCategoryName(categoryName);
+  async findProductByCategoryName(
+    categoryName: string
+  ): Promise<ProductResponse[]> {
+    return await this.productService.findProductsByCategoryName(categoryName);
   }
 
-  findProductByCode(code: string): ProductResponse | null {
-    return this.productService.findProductByCode(code);
+  async findProductByCode(code: string): Promise<ProductResponse | null> {
+    return await this.productService.findProductByCode(code);
   }
 
-  createProduct(productRequest: ProductRequest): ProductResponse | null {
-    return this.productService.createProduct(productRequest);
+  async createProduct(
+    productRequest: ProductRequest
+  ): Promise<ProductResponse | null> {
+    return await this.productService.createProduct(productRequest);
   }
 
-  updateProduct(
+  async updateProduct(
     code: string,
     productRequest: ProductRequest
-  ): ProductResponse | null {
+  ): Promise<ProductResponse | null> {
     return this.productService.updateProduct(code, productRequest);
   }
 
-  findProductWarningStock(): ProductResponse[] {
-    return this.productService.findProductWarningStock();
+  async findProductWarningStock(): Promise<ProductResponse[]> {
+    return await this.productService.findProductWarningStock();
   }
 
-  findProductsBetweenStock(
+  async findProductsBetweenStock(
     startStock: number,
     endStock: number
-  ): ProductResponse[] {
+  ): Promise<ProductResponse[]> {
     return this.productService.findProductsBetweenStock(startStock, endStock);
+  }
+
+  async findPurchasedProducts(): Promise<ProductResponse[]> {
+    return await this.productService.findPurchasedProducts();
+  }
+
+  async findUnpurchasedProducts(): Promise<ProductResponse[]> {
+    return await this.productService.findUnpurchasedProducts();
   }
 }

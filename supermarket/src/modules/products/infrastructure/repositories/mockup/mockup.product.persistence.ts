@@ -9,14 +9,16 @@ export class ProductRepositoryMockupImplementation
 {
   constructor(private readonly databaseMockup: DatabaseMockup) {}
 
-  findAllProducts(): ProductResponse[] {
+  async findAllProducts(): Promise<ProductResponse[]> {
     const products = this.databaseMockup.getInventory();
     return Array.from(products.getTable().values()).map(
       ProductAdapter.productModelToProductResponse
     );
   }
 
-  findProductsByCategoryName(categoryName: string): ProductResponse[] {
+  async findProductsByCategoryName(
+    categoryName: string
+  ): Promise<ProductResponse[]> {
     const products = this.databaseMockup.getInventory();
     return Array.from(products.getTable().values())
       .filter(
@@ -25,18 +27,71 @@ export class ProductRepositoryMockupImplementation
       .map((product) => ProductAdapter.productModelToProductResponse(product));
   }
 
-  findProductWarningStock(): ProductResponse[] {
+  async findPurchasedProducts(): Promise<ProductResponse[]> {
+    const products = this.databaseMockup.getInventory();
+    const invoices = this.databaseMockup.getInvoices();
+
+    const productResponse: ProductResponse[] = [];
+    const productsId: Set<string> = new Set<string>();
+    invoices.getTable().forEach((invoice) => {
+      invoice
+        .getCart()
+        .getCartItems()
+        .getTable()
+        .forEach((item) => {
+          if (!productsId.has(item.getProduct().getCode())) {
+            productResponse.push(
+              ProductAdapter.productModelToProductResponse(
+                products.find(item.getProduct().getCode())!
+              )
+            );
+          }
+          productsId.add(item.getProduct().getCode());
+        });
+    });
+    return productResponse;
+  }
+
+  async findUnpurchasedProducts(): Promise<ProductResponse[]> {
+    const products = this.databaseMockup.getInventory();
+    const invoices = this.databaseMockup.getInvoices();
+
+    const purchasedProductIds = new Set<string>();
+    const productResponse: ProductResponse[] = [];
+
+    for (const invoice of invoices.getTable().values()) {
+      const productsInInvoice = Array.from(
+        invoice.getCart().getCartItems().getTable().values()
+      );
+
+      for (const product of productsInInvoice) {
+        purchasedProductIds.add(product.getProduct().getCode());
+      }
+    }
+
+    for (const product of products.getTable().values()) {
+      if (!purchasedProductIds.has(product.getCode())) {
+        productResponse.push(
+          ProductAdapter.productModelToProductResponse(product)
+        );
+      }
+    }
+
+    return productResponse;
+  }
+
+  async findProductWarningStock(): Promise<ProductResponse[]> {
     const products = this.databaseMockup.getInventory();
     return Array.from(products.getTable().values())
       .filter((productModel) => productModel.getStock() < 5)
       .map((product) => ProductAdapter.productModelToProductResponse(product));
   }
 
-  findProductsBetweenStock(
+  async findProductsBetweenStock(
     startStock: number,
     endStock: number
-  ): ProductResponse[] {
-    const products = this.databaseMockup.getInventory();
+  ): Promise<ProductResponse[]> {
+    const products = await this.databaseMockup.getInventory();
 
     return Array.from(products.getTable().values())
       .filter(
@@ -47,7 +102,7 @@ export class ProductRepositoryMockupImplementation
       .map((product) => ProductAdapter.productModelToProductResponse(product));
   }
 
-  findProductByCode(code: string): ProductResponse | null {
+  async findProductByCode(code: string): Promise<ProductResponse | null> {
     const products = this.databaseMockup.getInventory();
     const productFound: ProductModel | undefined = products.find(code);
     return productFound !== undefined
@@ -55,7 +110,9 @@ export class ProductRepositoryMockupImplementation
       : null;
   }
 
-  createProduct(productModel: ProductModel): ProductResponse | null {
+  async createProduct(
+    productModel: ProductModel
+  ): Promise<ProductResponse | null> {
     const productCreated: ProductModel | undefined = this.databaseMockup
       .getInventory()
       .add(productModel.getCode(), productModel);
@@ -64,10 +121,10 @@ export class ProductRepositoryMockupImplementation
       : null;
   }
 
-  updateProduct(
+  async updateProduct(
     code: string,
     productModel: ProductModel
-  ): ProductResponse | null {
+  ): Promise<ProductResponse | null> {
     const productUpdated: ProductModel | undefined = this.databaseMockup
       .getInventory()
       .update(code, productModel);

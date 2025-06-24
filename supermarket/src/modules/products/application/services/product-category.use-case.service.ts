@@ -11,35 +11,37 @@ export class ProductCategoryService implements InterfaceUseCaseProductCategory {
     this.productCategoryRepository = productCategoryRepository;
   }
 
-  findAllProductCategories(): ProductCategoryResponse[] {
-    return this.productCategoryRepository.findAllProductCategories();
+  async findAllProductCategories(): Promise<ProductCategoryResponse[]> {
+    return await this.productCategoryRepository.findAllProductCategories();
   }
 
-  findProductCategoryByName(name: string): ProductCategoryResponse | null {
-    return this.productCategoryRepository.findProductCategoryByName(name);
+  async findProductCategoryByName(
+    name: string
+  ): Promise<ProductCategoryResponse | null> {
+    return await this.productCategoryRepository.findProductCategoryByName(name);
   }
 
-  createProductCategory(
+  async createProductCategory(
     productCategoryRequest: ProductCategoryRequest
-  ): ProductCategoryResponse | null {
+  ): Promise<ProductCategoryResponse | null> {
     const productCategoryModel: ProductCategoryModel =
       ProductCategoryMapper.productCategoryRequestToProductCategoryModel(
         productCategoryRequest
       );
-    return this.productCategoryRepository.createProductCategory(
+    return await this.productCategoryRepository.createProductCategory(
       productCategoryModel
     );
   }
 
-  updateProductCategory(
+  async updateProductCategory(
     name: string,
     productCategoryRequest: ProductCategoryRequest
-  ): ProductCategoryResponse | null {
+  ): Promise<ProductCategoryResponse | null> {
     const productCategoryModel: ProductCategoryModel =
       ProductCategoryMapper.productCategoryRequestToProductCategoryModel(
         productCategoryRequest
       );
-    return this.productCategoryRepository.updateProductCategory(
+    return await this.productCategoryRepository.updateProductCategory(
       name,
       productCategoryModel
     );

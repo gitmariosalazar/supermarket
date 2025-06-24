@@ -1,14 +1,16 @@
-import { ProductCategoryResponse } from '../../schemas/dto/response/product-category.response';
-import { ProductCategoryModel } from '../../schemas/model/category-product.model';
+import { ProductCategoryResponse } from '../schemas/dto/response/product-category.response';
+import { ProductCategoryModel } from '../schemas/model/category-product.model';
 
 export interface InterfaceProductCategoryRepository {
-  findAllProductCategories(): ProductCategoryResponse[];
-  findProductCategoryByName(name: string): ProductCategoryResponse | null;
+  findAllProductCategories(): Promise<ProductCategoryResponse[]>;
+  findProductCategoryByName(
+    name: string
+  ): Promise<ProductCategoryResponse | null>;
   createProductCategory(
     productCategoryModel: ProductCategoryModel
-  ): ProductCategoryResponse | null;
+  ): Promise<ProductCategoryResponse | null>;
   updateProductCategory(
     name: string,
     productCategoryModel: ProductCategoryModel
-  ): ProductCategoryResponse | null;
+  ): Promise<ProductCategoryResponse | null>;
 }

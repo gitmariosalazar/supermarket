@@ -2,17 +2,21 @@ import { ProductRequest } from '../../domain/schemas/dto/request/product.request
 import { ProductResponse } from '../../domain/schemas/dto/response/product.response';
 
 export interface InterfaceUseCaseProduct {
-  findAllProducts(): ProductResponse[];
-  findProductByCode(code: string): ProductResponse | null;
-  createProduct(productRequest: ProductRequest): ProductResponse | null;
+  findAllProducts(): Promise<ProductResponse[]>;
+  findProductByCode(code: string): Promise<ProductResponse | null>;
+  createProduct(
+    productRequest: ProductRequest
+  ): Promise<ProductResponse | null>;
   updateProduct(
     code: string,
     productRequest: ProductRequest
-  ): ProductResponse | null;
-  findProductWarningStock(): ProductResponse[];
+  ): Promise<ProductResponse | null>;
+  findProductWarningStock(): Promise<ProductResponse[]>;
   findProductsBetweenStock(
     startStock: number,
     endStock: number
-  ): ProductResponse[];
-  findProductsByCategoryName(categoryName: string): ProductResponse[];
+  ): Promise<ProductResponse[]>;
+  findProductsByCategoryName(categoryName: string): Promise<ProductResponse[]>;
+  findUnpurchasedProducts(): Promise<ProductResponse[]>;
+  findPurchasedProducts(): Promise<ProductResponse[]>;
 }
