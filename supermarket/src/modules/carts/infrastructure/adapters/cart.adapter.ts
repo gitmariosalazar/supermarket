@@ -38,8 +38,7 @@ export class CartAdapter {
       )
     );
     const cartRequest: CartRequest = new CartRequest(
-      CustomerAdapter.customerResponseToCustomerRequest(cartResponse.customer),
-      cartItemRequest
+      CustomerAdapter.customerResponseToCustomerRequest(cartResponse.customer)
     );
     return cartRequest;
   }

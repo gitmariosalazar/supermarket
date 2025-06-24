@@ -19,7 +19,11 @@ export class CartMapper {
           cartRequest.customer.address,
           cartRequest.customer.phone
         )
-      )
+      ),
+      cartRequest.subtotal,
+      cartRequest.iva,
+      cartRequest.total,
+      cartRequest.idCart
     );
     Array.from(cartRequest.cartItems.getTable().values()).forEach(
       (cartItemRequest) => {

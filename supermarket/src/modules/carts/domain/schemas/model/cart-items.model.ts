@@ -7,6 +7,9 @@ export class CartItemModel {
   private product: ProductModel;
   private quantity: number;
   private unitPrice?: number;
+  private subtotal?: number;
+
+  private iva?: number;
   private totalPrice?: number;
 
   constructor(
@@ -14,6 +17,8 @@ export class CartItemModel {
     product: ProductModel,
     quantity: number,
     unitPrice?: number,
+    subtotal?: number,
+    iva?: number,
     totalPrice?: number,
     idCartItem?: number
   ) {
@@ -21,8 +26,26 @@ export class CartItemModel {
     this.cart = cart!;
     this.product = product;
     this.quantity = quantity;
-    this.unitPrice = unitPrice;
-    this.totalPrice = totalPrice;
+    this.unitPrice = unitPrice !== undefined ? unitPrice : 0;
+    this.subtotal = subtotal !== undefined ? subtotal : 0;
+    this.totalPrice = totalPrice !== undefined ? totalPrice : 0;
+    this.iva = iva !== undefined ? iva : 0;
+  }
+
+  public getSubtotal(): number {
+    return this.subtotal!;
+  }
+
+  public setSubtotal?(subtotal: number): void {
+    this.subtotal = subtotal;
+  }
+
+  public getIva(): number {
+    return this.iva!;
+  }
+
+  public setIva(iva: number): void {
+    this.iva = iva;
   }
 
   public getIdCartItem(): number {

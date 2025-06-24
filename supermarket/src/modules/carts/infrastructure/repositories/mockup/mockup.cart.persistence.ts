@@ -9,13 +9,13 @@ export class CartRepositoryMockupImplementation
   implements InterfaceCartRepository
 {
   constructor(private readonly databaseMockup: DatabaseMockup) {}
-  findAllCarts(): CartResponse[] {
+  async findAllCarts(): Promise<CartResponse[]> {
     return Array.from(this.databaseMockup.getCarts().getTable().values()).map(
       CartAdapter.cartModelToCartResponse
     );
   }
 
-  findCartById(idCart: number): CartResponse | null {
+  async findCartById(idCart: number): Promise<CartResponse | null> {
     const findCart: CartModel | undefined = this.databaseMockup
       .getCarts()
       .find(idCart);
@@ -24,19 +24,28 @@ export class CartRepositoryMockupImplementation
       : null;
   }
 
-  createCart(cartModel: CartModel): CartResponse | null {
-    const id: number = this.databaseMockup.getCarts().size() + 1;
-    cartModel.setIdCart(id);
+  async createCart(cartModel: CartModel): Promise<CartResponse | null> {
+    const keys = Array.from(this.databaseMockup.getCarts().getTable().keys());
+    const maxId: number = keys.length > 0 ? Math.max(...keys) + 1 : 1;
+    cartModel.setIdCart(maxId);
     const cartCreated: CartModel | undefined = this.databaseMockup
       .getCarts()
       .add(cartModel.getIdCart(), cartModel);
-   
+    cartModel
+      .getCartItems()
+      .getTable()
+      .forEach((item) => {
+        this.addProductToCart(item, cartModel);
+        this.databaseMockup
+          .getInventory()
+          .update(item.getProduct().getCode(), item.getProduct());
+      });
     return cartCreated !== undefined
       ? CartAdapter.cartModelToCartResponse(cartCreated)
       : null;
   }
 
-  findCartByIdCustomer(idCustomer: string): CartResponse[] {
+  async findCartByIdCustomer(idCustomer: string): Promise<CartResponse[]> {
     const carts: CartModel[] = Array.from(
       this.databaseMockup.getCarts().getTable().values()
     );
@@ -49,15 +58,19 @@ export class CartRepositoryMockupImplementation
     return result;
   }
 
-  findCartByIdCustomerInQueue(idCustomer: string): CartModel | null {
-    const carts: CartModel[] = Array.from(
-      this.databaseMockup.getCarts().getTable().values()
+  async addProductToCart(
+    cartItemModel: CartItemModel,
+    cartModel: CartModel
+  ): Promise<boolean> {
+    const keys = Array.from(
+      this.databaseMockup.getCartItems().getTable().keys()
     );
-    for (const cart of carts) {
-      if (cart.getCustomer().getIdCustomer() === idCustomer) {
-        return cart;
-      }
-    }
-    return null;
+    const maxId: number = Math.max(...keys) + 1;
+    cartItemModel.setCart(cartModel);
+    cartItemModel.setIdCartItem(maxId);
+    const cartItemCreated: CartItemModel | undefined = this.databaseMockup
+      .getCartItems()
+      .add(maxId, cartItemModel);
+    return cartItemCreated !== undefined;
   }
 }

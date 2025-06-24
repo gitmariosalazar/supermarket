@@ -1,24 +1,31 @@
 import { CartService } from '../../application/services/cart.use-case.service';
+import { CartItemRequest } from '../../domain/schemas/dto/request/cart-item.request';
 import { CartRequest } from '../../domain/schemas/dto/request/cart.request';
 import { CartResponse } from '../../domain/schemas/dto/response/cart.response';
-import { CartModel } from '../../domain/schemas/model/cart.model';
 
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
-  createCart(cartRequest: CartRequest): CartResponse | null {
+  createCart(cartRequest: CartRequest): Promise<CartResponse | null> {
     return this.cartService.createCart(cartRequest);
   }
 
-  findAllCarts(): CartResponse[] {
+  findAllCarts(): Promise<CartResponse[]> {
     return this.cartService.findAllCarts();
   }
 
-  findCartByCustomer(idCustomer: string): CartModel | null {
-    return this.cartService.findCartByIdCustomerInQueue(idCustomer);
+  findCartByCustomer(idCustomer: string): Promise<CartResponse[]> {
+    return this.cartService.findCartByIdCustomer(idCustomer);
   }
 
-  findCartById(id: number): CartResponse | null {
+  findCartById(id: number): Promise<CartResponse | null> {
     return this.cartService.findCartById(id);
+  }
+
+  addToCart(
+    cartItemRequest: CartItemRequest,
+    cartRequest: CartRequest
+  ): string[] {
+    return this.cartService.addToCart(cartItemRequest, cartRequest);
   }
 }

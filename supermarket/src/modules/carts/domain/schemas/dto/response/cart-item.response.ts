@@ -7,5 +7,7 @@ export interface CartItemResponse {
   product: ProductResponse;
   quantity: number;
   unitPrice: number;
+  subtotal: number;
+  iva: number;
   totalPrice: number;
 }

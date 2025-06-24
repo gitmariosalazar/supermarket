@@ -8,15 +8,17 @@ export class CartItemService implements InterfaceCartItemUseCase {
   constructor(
     private readonly cartItemRepository: InterfaceCartItemRepository
   ) {}
-  findAllCartItems(): CartItemResponse[] {
+  findAllCartItems(): Promise<CartItemResponse[]> {
     return this.cartItemRepository.findAllCartItems();
   }
 
-  findCartItemById(idCartItem: number): CartItemResponse | null {
+  findCartItemById(idCartItem: number): Promise<CartItemResponse | null> {
     return this.cartItemRepository.findCartItemById(idCartItem);
   }
 
-  createCartItem(cartItemRequest: CartItemRequest): CartItemResponse | null {
+  createCartItem(
+    cartItemRequest: CartItemRequest
+  ): Promise<CartItemResponse | null> {
     return this.cartItemRepository.createCartItem(
       CartItemMapper.cartItemRequestToCartItemModel(cartItemRequest)
     );
@@ -25,7 +27,7 @@ export class CartItemService implements InterfaceCartItemUseCase {
   updateCartItem(
     idCartItem: number,
     cartItemRequest: CartItemRequest
-  ): CartItemResponse | null {
+  ): Promise<CartItemResponse | null> {
     return this.cartItemRepository.updateCartItem(
       idCartItem,
       CartItemMapper.cartItemRequestToCartItemModel(cartItemRequest)

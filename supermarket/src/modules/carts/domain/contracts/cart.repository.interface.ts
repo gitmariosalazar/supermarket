@@ -3,10 +3,12 @@ import { CartItemModel } from '../schemas/model/cart-items.model';
 import { CartModel } from '../schemas/model/cart.model';
 
 export interface InterfaceCartRepository {
-  findAllCarts(): CartResponse[];
-  findCartById(idCart: number): CartResponse | null;
-  findCartByIdCustomer(idCustomer: string): CartResponse[];
-  findCartByIdCustomerInQueue(idCustomer: string): CartModel | null;
-  createCart(cartModel: CartModel): CartResponse | null;
-  //addToCart(cartItemModel: CartItemModel): boolean;
+  findAllCarts(): Promise<CartResponse[]>;
+  findCartById(idCart: number): Promise<CartResponse | null>;
+  findCartByIdCustomer(idCustomer: string): Promise<CartResponse[]>;
+  createCart(cartModel: CartModel): Promise<CartResponse | null>;
+  addProductToCart(
+    cartItemModel: CartItemModel,
+    cartModel: CartModel
+  ): Promise<boolean>;
 }

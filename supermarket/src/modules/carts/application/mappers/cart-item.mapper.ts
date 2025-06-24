@@ -15,9 +15,12 @@ export class CartItemMapper {
     const cartItemModel: CartItemModel = new CartItemModel(
       null, //CartMapper.cartRequestToCartModel(cartRequest)
       ProductMapper.productRequestToProductModel(productRequest),
-      0,
-      0,
-      0
+      cartItemRequest.quantity,
+      cartItemRequest.unitPrice!,
+      cartItemRequest.subtotal!,
+      cartItemRequest.iva!,
+      cartItemRequest.totalPrice!,
+      cartItemRequest.idCartItem
     );
     return cartItemModel;
   }

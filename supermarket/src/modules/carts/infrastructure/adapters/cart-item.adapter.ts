@@ -16,6 +16,8 @@ export class CartItemAdapter {
       ),
       quantity: cartItemModel.getQuantity(),
       unitPrice: cartItemModel.getUnitPrice(),
+      subtotal: cartItemModel.getSubtotal()!,
+      iva: cartItemModel.getIva(),
       totalPrice: cartItemModel.getTotalPrice()
     };
     return cartItemResponse;
@@ -28,6 +30,10 @@ export class CartItemAdapter {
       CartAdapter.cartResponseToCartRequest(cartItemResponse.cart!),
       ProductAdapter.productResponseToProductRequest(cartItemResponse.product),
       cartItemResponse.quantity,
+      cartItemResponse.unitPrice,
+      cartItemResponse.subtotal,
+      cartItemResponse.iva,
+      cartItemResponse.totalPrice,
       cartItemResponse.idCartItem
     );
     return cartItemRequest;
