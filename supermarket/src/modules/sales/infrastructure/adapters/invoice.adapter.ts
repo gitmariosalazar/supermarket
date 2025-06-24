@@ -13,9 +13,10 @@ export class InvoiceAdapter {
         invoiceModel.getSalesman()
       ),
       cart: CartAdapter.cartModelToCartResponse(invoiceModel.getCart()),
-      subtotal: 0,
-      iva: 0,
-      total: 0
+      subtotal: invoiceModel.getSubtotal(),
+      iva: invoiceModel.getIva(),
+      total: invoiceModel.getTotal(),
+      date: invoiceModel.getDate()
     };
     return invoiceResponse;
   }

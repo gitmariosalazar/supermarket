@@ -8,16 +8,31 @@ export class InvoiceModel {
   private subtotal: number;
   private iva: number;
   private total: number;
+  private date: Date;
 
-  constructor(seller: SellerModel, cart: CartModel) {
+  constructor(
+    seller: SellerModel,
+    cart: CartModel,
+    subtotal?: number,
+    iva?: number,
+    total?: number
+  ) {
     this.idInvoice = 0;
     this.seller = seller;
     this.cart = cart;
-    this.subtotal = 0;
-    this.iva = 0;
-    this.total = 0;
+    this.subtotal = subtotal === undefined ? 0 : subtotal;
+    this.iva = iva === undefined ? 0 : iva;
+    this.total = total === undefined ? 0 : total;
+    this.date = new Date();
   }
 
+  public getDate(): Date {
+    return this.date;
+  }
+
+  public setDate(date: Date): void {
+    this.date = date;
+  }
   public getIdInvoice(): number {
     return this.idInvoice;
   }

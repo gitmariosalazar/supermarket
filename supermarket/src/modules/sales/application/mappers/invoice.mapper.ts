@@ -9,7 +9,10 @@ export class InvoiceMapper {
   ): InvoiceModel {
     const invoiceModel: InvoiceModel = new InvoiceModel(
       SellerMapper.sellerRequestToSellerModel(invoiceRequest.seller),
-      CartMapper.cartRequestToCartModel(invoiceRequest.cart)
+      CartMapper.cartRequestToCartModel(invoiceRequest.cart),
+      invoiceRequest.cart.subtotal,
+      invoiceRequest.cart.iva,
+      invoiceRequest.cart.total
     );
     return invoiceModel;
   }

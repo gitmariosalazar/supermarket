@@ -8,4 +8,5 @@ export interface InvoiceResponse {
   subtotal: number;
   iva: number;
   total: number;
+  date: Date | string;
 }
