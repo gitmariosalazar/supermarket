@@ -12,8 +12,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 4,
-    publicPrice: 699.99,
-    supplierPrice: 550.0
+    publicPrice: 793.1,
+    supplierPrice: 570.5
   },
   {
     id: 2,
@@ -27,8 +27,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 30,
-    publicPrice: 1299.99,
-    supplierPrice: 1000.0
+    publicPrice: 1452.1,
+    supplierPrice: 1044.0
   },
   {
     id: 3,
@@ -42,8 +42,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 3,
-    publicPrice: 149.99,
-    supplierPrice: 90.0
+    publicPrice: 131.61,
+    supplierPrice: 94.6
   },
   {
     id: 4,
@@ -57,8 +57,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 75,
-    publicPrice: 199.99,
-    supplierPrice: 130.0
+    publicPrice: 189.41,
+    supplierPrice: 136.2
   },
   {
     id: 5,
@@ -72,8 +72,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 2,
-    publicPrice: 499.99,
-    supplierPrice: 400.0
+    publicPrice: 578.6,
+    supplierPrice: 416.0
   },
   {
     id: 6,
@@ -87,8 +87,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 15,
-    publicPrice: 799.99,
-    supplierPrice: 600.0
+    publicPrice: 876.9,
+    supplierPrice: 630.0
   },
   {
     id: 7,
@@ -102,8 +102,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 80,
-    publicPrice: 89.99,
-    supplierPrice: 50.0
+    publicPrice: 73.11,
+    supplierPrice: 52.6
   },
   {
     id: 8,
@@ -117,8 +117,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 40,
-    publicPrice: 299.99,
-    supplierPrice: 220.0
+    publicPrice: 319.79,
+    supplierPrice: 229.9
   },
   {
     id: 9,
@@ -132,8 +132,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 120,
-    publicPrice: 39.99,
-    supplierPrice: 20.0
+    publicPrice: 29.24,
+    supplierPrice: 21.0
   },
   {
     id: 10,
@@ -147,8 +147,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 60,
-    publicPrice: 99.99,
-    supplierPrice: 70.0
+    publicPrice: 101.53,
+    supplierPrice: 73.0
   },
   {
     id: 11,
@@ -162,8 +162,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 12,
-    publicPrice: 59.99,
-    supplierPrice: 35.0
+    publicPrice: 51.29,
+    supplierPrice: 36.9
   },
   {
     id: 12,
@@ -177,8 +177,8 @@ export const productsMockup = [
         'Devices and gadgets like smartphones, laptops, and accessories'
     },
     stock: 25,
-    publicPrice: 129.99,
-    supplierPrice: 80.0
+    publicPrice: 116.96,
+    supplierPrice: 84.1
   },
 
   // Books (10 products)
@@ -193,8 +193,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 14,
-    publicPrice: 19.99,
-    supplierPrice: 12.0
+    publicPrice: 17.53,
+    supplierPrice: 12.6
   },
   {
     id: 14,
@@ -207,8 +207,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 12,
-    publicPrice: 15.99,
-    supplierPrice: 9.0
+    publicPrice: 13.15,
+    supplierPrice: 9.5
   },
   {
     id: 15,
@@ -221,8 +221,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 30,
-    publicPrice: 24.99,
-    supplierPrice: 15.0
+    publicPrice: 21.93,
+    supplierPrice: 15.8
   },
   {
     id: 16,
@@ -235,8 +235,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 3,
-    publicPrice: 22.99,
-    supplierPrice: 13.5
+    publicPrice: 19.71,
+    supplierPrice: 14.2
   },
   {
     id: 17,
@@ -249,8 +249,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 12,
-    publicPrice: 29.99,
-    supplierPrice: 18.0
+    publicPrice: 26.33,
+    supplierPrice: 18.9
   },
   {
     id: 18,
@@ -263,8 +263,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 25,
-    publicPrice: 12.99,
-    supplierPrice: 7.5
+    publicPrice: 10.97,
+    supplierPrice: 7.9
   },
   {
     id: 19,
@@ -277,8 +277,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 120,
-    publicPrice: 17.99,
-    supplierPrice: 10.0
+    publicPrice: 14.67,
+    supplierPrice: 10.6
   },
   {
     id: 20,
@@ -291,8 +291,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 140,
-    publicPrice: 20.99,
-    supplierPrice: 12.5
+    publicPrice: 18.27,
+    supplierPrice: 13.2
   },
   {
     id: 21,
@@ -305,8 +305,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 80,
-    publicPrice: 14.99,
-    supplierPrice: 8.0
+    publicPrice: 11.68,
+    supplierPrice: 8.4
   },
   {
     id: 22,
@@ -319,8 +319,8 @@ export const productsMockup = [
       description: 'Printed and digital books across various genres'
     },
     stock: 60,
-    publicPrice: 49.99,
-    supplierPrice: 30.0
+    publicPrice: 43.71,
+    supplierPrice: 31.4
   },
 
   // Clothing (15 products)
@@ -335,8 +335,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 21,
-    publicPrice: 19.99,
-    supplierPrice: 10.0
+    publicPrice: 14.67,
+    supplierPrice: 10.6
   },
   {
     id: 24,
@@ -349,8 +349,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 14,
-    publicPrice: 49.99,
-    supplierPrice: 30.0
+    publicPrice: 43.71,
+    supplierPrice: 31.4
   },
   {
     id: 25,
@@ -363,8 +363,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 80,
-    publicPrice: 99.99,
-    supplierPrice: 60.0
+    publicPrice: 87.42,
+    supplierPrice: 62.9
   },
   {
     id: 26,
@@ -377,8 +377,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 4,
-    publicPrice: 79.99,
-    supplierPrice: 45.0
+    publicPrice: 65.53,
+    supplierPrice: 47.1
   },
   {
     id: 27,
@@ -391,8 +391,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 12,
-    publicPrice: 59.99,
-    supplierPrice: 35.0
+    publicPrice: 51.29,
+    supplierPrice: 36.9
   },
   {
     id: 28,
@@ -405,7 +405,7 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 120,
-    publicPrice: 39.99,
+    publicPrice: 30.63,
     supplierPrice: 22.0
   },
   {
@@ -419,8 +419,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 3,
-    publicPrice: 34.99,
-    supplierPrice: 20.0
+    publicPrice: 29.24,
+    supplierPrice: 21.0
   },
   {
     id: 30,
@@ -433,8 +433,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 14,
-    publicPrice: 24.99,
-    supplierPrice: 12.0
+    publicPrice: 17.53,
+    supplierPrice: 12.6
   },
   {
     id: 31,
@@ -447,8 +447,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 30,
-    publicPrice: 29.99,
-    supplierPrice: 15.0
+    publicPrice: 21.93,
+    supplierPrice: 15.8
   },
   {
     id: 32,
@@ -461,8 +461,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 70,
-    publicPrice: 89.99,
-    supplierPrice: 50.0
+    publicPrice: 73.11,
+    supplierPrice: 52.6
   },
   {
     id: 33,
@@ -475,7 +475,7 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 160,
-    publicPrice: 29.99,
+    publicPrice: 25.02,
     supplierPrice: 18.0
   },
   {
@@ -489,8 +489,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 110,
-    publicPrice: 34.99,
-    supplierPrice: 20.0
+    publicPrice: 29.24,
+    supplierPrice: 21.0
   },
   {
     id: 35,
@@ -503,8 +503,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 40,
-    publicPrice: 199.99,
-    supplierPrice: 120.0
+    publicPrice: 174.81,
+    supplierPrice: 125.7
   },
   {
     id: 36,
@@ -517,8 +517,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 12,
-    publicPrice: 19.99,
-    supplierPrice: 10.0
+    publicPrice: 14.67,
+    supplierPrice: 10.6
   },
   {
     id: 37,
@@ -531,8 +531,8 @@ export const productsMockup = [
       description: "Men's and women's apparel, including casual and formal wear"
     },
     stock: 21,
-    publicPrice: 14.99,
-    supplierPrice: 8.0
+    publicPrice: 11.68,
+    supplierPrice: 8.4
   },
 
   // Home Appliances (13 products)
@@ -548,8 +548,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 2,
-    publicPrice: 999.99,
-    supplierPrice: 750.0
+    publicPrice: 1094.1,
+    supplierPrice: 787.5
   },
   {
     id: 39,
@@ -563,8 +563,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 25,
-    publicPrice: 599.99,
-    supplierPrice: 450.0
+    publicPrice: 655.11,
+    supplierPrice: 471.0
   },
   {
     id: 40,
@@ -578,8 +578,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 60,
-    publicPrice: 149.99,
-    supplierPrice: 100.0
+    publicPrice: 145.8,
+    supplierPrice: 104.9
   },
   {
     id: 41,
@@ -593,8 +593,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 15,
-    publicPrice: 499.99,
-    supplierPrice: 350.0
+    publicPrice: 510.79,
+    supplierPrice: 367.5
   },
   {
     id: 42,
@@ -608,8 +608,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 10,
-    publicPrice: 699.99,
-    supplierPrice: 500.0
+    publicPrice: 730.1,
+    supplierPrice: 525.0
   },
   {
     id: 43,
@@ -623,8 +623,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 4,
-    publicPrice: 199.99,
-    supplierPrice: 120.0
+    publicPrice: 174.81,
+    supplierPrice: 125.7
   },
   {
     id: 44,
@@ -638,8 +638,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 3,
-    publicPrice: 39.99,
-    supplierPrice: 25.0
+    publicPrice: 36.11,
+    supplierPrice: 26.0
   },
   {
     id: 45,
@@ -653,8 +653,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 80,
-    publicPrice: 49.99,
-    supplierPrice: 30.0
+    publicPrice: 43.71,
+    supplierPrice: 31.4
   },
   {
     id: 46,
@@ -668,8 +668,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 70,
-    publicPrice: 79.99,
-    supplierPrice: 50.0
+    publicPrice: 73.11,
+    supplierPrice: 52.6
   },
   {
     id: 47,
@@ -683,8 +683,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 12,
-    publicPrice: 59.99,
-    supplierPrice: 35.0
+    publicPrice: 51.29,
+    supplierPrice: 36.9
   },
   {
     id: 48,
@@ -698,8 +698,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 40,
-    publicPrice: 129.99,
-    supplierPrice: 80.0
+    publicPrice: 116.96,
+    supplierPrice: 84.1
   },
   {
     id: 49,
@@ -713,8 +713,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 15,
-    publicPrice: 799.99,
-    supplierPrice: 600.0
+    publicPrice: 876.9,
+    supplierPrice: 630.0
   },
   {
     id: 50,
@@ -728,8 +728,8 @@ export const productsMockup = [
         'Household appliances like refrigerators and washing machines'
     },
     stock: 60,
-    publicPrice: 99.99,
-    supplierPrice: 60.0
+    publicPrice: 87.42,
+    supplierPrice: 62.9
   },
 
   // Toys (11 products)
@@ -744,8 +744,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 14,
-    publicPrice: 29.99,
-    supplierPrice: 15.0
+    publicPrice: 21.93,
+    supplierPrice: 15.8
   },
   {
     id: 52,
@@ -758,8 +758,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 12,
-    publicPrice: 19.99,
-    supplierPrice: 10.0
+    publicPrice: 14.67,
+    supplierPrice: 10.6
   },
   {
     id: 53,
@@ -772,8 +772,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 3,
-    publicPrice: 34.99,
-    supplierPrice: 20.0
+    publicPrice: 29.24,
+    supplierPrice: 21.0
   },
   {
     id: 54,
@@ -786,8 +786,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 120,
-    publicPrice: 24.99,
-    supplierPrice: 12.0
+    publicPrice: 17.53,
+    supplierPrice: 12.6
   },
   {
     id: 55,
@@ -800,8 +800,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 80,
-    publicPrice: 49.99,
-    supplierPrice: 30.0
+    publicPrice: 43.71,
+    supplierPrice: 31.4
   },
   {
     id: 56,
@@ -814,8 +814,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 140,
-    publicPrice: 14.99,
-    supplierPrice: 8.0
+    publicPrice: 11.68,
+    supplierPrice: 8.4
   },
   {
     id: 57,
@@ -828,8 +828,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 14,
-    publicPrice: 19.99,
-    supplierPrice: 10.0
+    publicPrice: 14.67,
+    supplierPrice: 10.6
   },
   {
     id: 58,
@@ -842,8 +842,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 60,
-    publicPrice: 59.99,
-    supplierPrice: 35.0
+    publicPrice: 51.29,
+    supplierPrice: 36.9
   },
   {
     id: 59,
@@ -856,8 +856,8 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 110,
-    publicPrice: 29.99,
-    supplierPrice: 15.0
+    publicPrice: 21.93,
+    supplierPrice: 15.8
   },
   {
     id: 60,
@@ -870,7 +870,7 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 12,
-    publicPrice: 39.99,
+    publicPrice: 30.63,
     supplierPrice: 22.0
   },
   {
@@ -884,7 +884,7 @@ export const productsMockup = [
       description: "Children's toys and games for all ages"
     },
     stock: 4,
-    publicPrice: 69.99,
-    supplierPrice: 40.0
+    publicPrice: 58.6,
+    supplierPrice: 42.2
   }
 ];

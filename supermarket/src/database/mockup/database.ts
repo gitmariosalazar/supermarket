@@ -7,13 +7,14 @@ import { InvoiceModel } from '../../modules/sales/domain/schemas/model/invoice.m
 import { SellerModel } from '../../modules/sellers/domain/schemas/model/seller.model';
 import { HashMap } from '../../shared/models/hash-map';
 import { PersonModel } from '../../shared/modules/person/domain/schemas/model/person.model';
+import { DatabaseAbstract } from '../model/database.abstract.model';
 import { customersMockup } from './customers/customers';
 import { personMockup } from './person/person';
 import { productCategoriesMockup } from './products/product-categories';
 import { productsMockup } from './products/products';
 import { sellersMockup } from './sellers/sellers';
 
-export class DatabaseMockup {
+export class DatabaseMockup extends DatabaseAbstract {
   private inventory: HashMap<string, ProductModel>;
   private categories: HashMap<string, ProductCategoryModel>;
   private peoples: HashMap<string, PersonModel>;
@@ -25,6 +26,7 @@ export class DatabaseMockup {
   //private detailsInvoices: HashMap<string, SellerModel>;
 
   constructor() {
+    super();
     this.inventory = new HashMap();
     this.categories = new HashMap();
     this.peoples = new HashMap();
@@ -101,6 +103,10 @@ export class DatabaseMockup {
       );
       this.sellers.add(seller.idSeller, sellerModel);
     }
+  }
+
+  async query<T>(sql: string, params: any[]): Promise<T[]> {
+    return [sql as T, params as T];
   }
 
   public getInvoices(): HashMap<number, InvoiceModel> {
