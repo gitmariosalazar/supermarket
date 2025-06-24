@@ -1,3 +1,6 @@
+import { CartRequest } from '../modules/carts/domain/schemas/dto/request/cart.request';
+import { CartResponse } from '../modules/carts/domain/schemas/dto/response/cart.response';
+import { PriorityQueue } from '../shared/models/queue';
 import { Company } from './company';
 
 export class Supermarket {
@@ -6,6 +9,7 @@ export class Supermarket {
   private address: string;
   private email: string;
   private phone: string;
+  private customersQueue: PriorityQueue<CartRequest>;
 
   constructor(
     idSupermarket: string,
@@ -19,6 +23,15 @@ export class Supermarket {
     this.address = address;
     this.email = email;
     this.phone = phone;
+    this.customersQueue = new PriorityQueue();
+  }
+
+  public getCustomersQueue(): PriorityQueue<CartRequest> {
+    return this.customersQueue;
+  }
+
+  public setCustomersQueue(customersQueue: PriorityQueue<CartRequest>): void {
+    this.customersQueue = customersQueue;
   }
 
   public getIdSupermarket(): string {
