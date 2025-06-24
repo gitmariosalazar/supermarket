@@ -3,6 +3,42 @@ import { ShowMessage } from '../../ui/messages/message.util';
 
 const prompt = promptSync({ sigint: true });
 
+export function isValidNumberDefaultZeroPrompt(message: string): number {
+  let input: string;
+  let num: number;
+  while (true) {
+    input = prompt(message)?.trim() || '';
+    if (input === '') {
+      console.log(ShowMessage.message('Default value is 0!', 'warning', true));
+      num = 0;
+      return num;
+    }
+    num = Number(input);
+    if (isNaN(num)) {
+      console.log(
+        ShowMessage.message(
+          'Only numeric values are accepted. Try again!',
+          'error',
+          true
+        )
+      );
+      continue;
+    }
+    if (num <= 0) {
+      console.log(
+        ShowMessage.message(
+          'The number must be greater than zero. Try again!',
+          'error',
+          true
+        )
+      );
+      continue;
+    }
+    break;
+  }
+  return num;
+}
+
 export function isValidNumberPrompt(message: string): number {
   let input: string;
   let num: number;
@@ -10,11 +46,7 @@ export function isValidNumberPrompt(message: string): number {
     input = prompt(message)?.trim() || '';
     if (input === '') {
       console.log(
-        ShowMessage.message(
-          '❌ Value cannot be empty. Try again!',
-          'error',
-          true
-        )
+        ShowMessage.message('Value cannot be empty. Try again!', 'error', true)
       );
       continue;
     }
@@ -23,7 +55,7 @@ export function isValidNumberPrompt(message: string): number {
     if (isNaN(num)) {
       console.log(
         ShowMessage.message(
-          '❌ Only numeric values are accepted. Try again!',
+          'Only numeric values are accepted. Try again!',
           'error',
           true
         )
@@ -42,11 +74,7 @@ export function isPositiveNumberPrompt(message: string): number {
     input = prompt(message)?.trim() || '';
     if (input === '') {
       console.log(
-        ShowMessage.message(
-          '❌ Value cannot be empty. Try again!',
-          'error',
-          true
-        )
+        ShowMessage.message('Value cannot be empty. Try again!', 'error', true)
       );
       continue;
     }
@@ -54,7 +82,7 @@ export function isPositiveNumberPrompt(message: string): number {
     if (isNaN(num)) {
       console.log(
         ShowMessage.message(
-          '❌ Only numeric values are accepted. Try again!',
+          'Only numeric values are accepted. Try again!',
           'error',
           true
         )
@@ -64,7 +92,47 @@ export function isPositiveNumberPrompt(message: string): number {
     if (num <= 0) {
       console.log(
         ShowMessage.message(
-          '❌ The number must be greater than zero. Try again!',
+          'The number must be greater than zero. Try again!',
+          'error',
+          true
+        )
+      );
+      continue;
+    }
+    break;
+  }
+  return num;
+}
+
+export function isPositiveNumberMinLimitPrompt(
+  message: string,
+  limit: number
+): number {
+  let input: string;
+  let num: number;
+  while (true) {
+    input = prompt(message)?.trim() || '';
+    if (input === '') {
+      console.log(
+        ShowMessage.message('Value cannot be empty. Try again!', 'error', true)
+      );
+      continue;
+    }
+    num = Number(input);
+    if (isNaN(num)) {
+      console.log(
+        ShowMessage.message(
+          'Only numeric values are accepted. Try again!',
+          'error',
+          true
+        )
+      );
+      continue;
+    }
+    if (num < limit) {
+      console.log(
+        ShowMessage.message(
+          `The number must be greater than ${limit}. Try again!`,
           'error',
           true
         )
@@ -84,26 +152,17 @@ export function isValidEmailPrompt(message: string): string {
 
     if (input === '') {
       console.log(
-        ShowMessage.message(
-          '❌ Email cannot be empty. Try again!',
-          'error',
-          true
-        )
+        ShowMessage.message('Email cannot be empty. Try again!', 'error', true)
       );
       continue;
     }
 
     if (!emailRegex.test(input)) {
       console.log(
-        ShowMessage.message(
-          '❌ The email is not valid. Try again!',
-          'error',
-          true
-        )
+        ShowMessage.message('The email is not valid. Try again!', 'error', true)
       );
       continue;
     }
-
     return input;
   }
 }
@@ -116,18 +175,14 @@ export function isValidDatePrompt(message: string): string {
 
     if (input === '') {
       console.log(
-        ShowMessage.message(
-          '❌ Date cannot be empty. Try again!',
-          'error',
-          true
-        )
+        ShowMessage.message('Date cannot be empty. Try again!', 'error', true)
       );
       continue;
     }
 
     if (!dateRegex.test(input)) {
       console.log(
-        ShowMessage.message('❌ Invalid format. Use YYYY-MM-DD.', 'error', true)
+        ShowMessage.message('Invalid format. Use YYYY-MM-DD.', 'error', true)
       );
       continue;
     }
@@ -145,11 +200,7 @@ export function isValidDatePrompt(message: string): string {
 
     if (!isValid(year, month, day)) {
       console.log(
-        ShowMessage.message(
-          '❌ The date is not valid. Try again!',
-          'error',
-          true
-        )
+        ShowMessage.message('The date is not valid. Try again!', 'error', true)
       );
       continue;
     }
@@ -176,11 +227,7 @@ export function promptNonEmptyString(message: string): string {
 
     if (input.length === 0) {
       console.log(
-        ShowMessage.message(
-          '❌ Name cannot be empty. Try again!',
-          'error',
-          true
-        )
+        ShowMessage.message('Name cannot be empty. Try again!', 'error', true)
       );
     }
   } while (input.length === 0);
