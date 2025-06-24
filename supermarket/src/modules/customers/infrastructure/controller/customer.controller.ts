@@ -5,22 +5,24 @@ import { CustomerResponse } from '../../domain/schemas/dto/response/customer.res
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
-  findAllCustomers(): CustomerResponse[] {
+  findAllCustomers(): Promise<CustomerResponse[]> {
     return this.customerService.findAllCustomers();
   }
 
-  findCustomerById(idCustomer: string): CustomerResponse | null {
+  findCustomerById(idCustomer: string): Promise<CustomerResponse | null> {
     return this.customerService.findCustomerById(idCustomer);
   }
 
-  createCustomer(customerRequest: CustomerRequest): CustomerResponse | null {
+  createCustomer(
+    customerRequest: CustomerRequest
+  ): Promise<CustomerResponse | null> {
     return this.customerService.createCustomer(customerRequest);
   }
 
   updateCustomer(
     idCustomer: string,
     customerRequest: CustomerRequest
-  ): CustomerResponse | null {
+  ): Promise<CustomerResponse | null> {
     return this.customerService.updateCustomer(idCustomer, customerRequest);
   }
 }

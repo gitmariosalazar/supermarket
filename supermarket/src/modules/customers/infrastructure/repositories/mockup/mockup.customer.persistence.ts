@@ -9,13 +9,13 @@ export class CustomerRepositoryMockupImplementation
 {
   constructor(private readonly databaseMockup: DatabaseMockup) {}
 
-  findAllCustomers(): CustomerResponse[] {
+  async findAllCustomers(): Promise<CustomerResponse[]> {
     return Array.from(
       this.databaseMockup.getCustomers().getTable().values()
     ).map(CustomerAdapter.customerModelToCustomerResponse);
   }
 
-  findCustomerById(idCustomer: string): CustomerResponse | null {
+  async findCustomerById(idCustomer: string): Promise<CustomerResponse | null> {
     const customerFound: CustomerModel | undefined = this.databaseMockup
       .getCustomers()
       .find(idCustomer);
@@ -24,7 +24,9 @@ export class CustomerRepositoryMockupImplementation
       : null;
   }
 
-  createCustomer(customerModel: CustomerModel): CustomerResponse | null {
+  async createCustomer(
+    customerModel: CustomerModel
+  ): Promise<CustomerResponse | null> {
     const customerCreated: CustomerModel | undefined = this.databaseMockup
       .getCustomers()
       .add(customerModel.getIdCustomer(), customerModel);
@@ -33,10 +35,10 @@ export class CustomerRepositoryMockupImplementation
       : null;
   }
 
-  updateCustomer(
+  async updateCustomer(
     idCustomer: string,
     customerModel: CustomerModel
-  ): CustomerResponse | null {
+  ): Promise<CustomerResponse | null> {
     const customerUpdated: CustomerModel | undefined = this.databaseMockup
       .getCustomers()
       .update(idCustomer, customerModel);

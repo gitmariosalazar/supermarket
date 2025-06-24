@@ -2,11 +2,13 @@ import { CustomerRequest } from '../../domain/schemas/dto/request/customer.reque
 import { CustomerResponse } from '../../domain/schemas/dto/response/customer.response';
 
 export interface InterfaceUseCaseCustomer {
-  findAllCustomers(): CustomerResponse[];
-  findCustomerById(idCustomer: string): CustomerResponse | null;
-  createCustomer(customerRequest: CustomerRequest): CustomerResponse | null;
+  findAllCustomers(): Promise<CustomerResponse[]>;
+  findCustomerById(idCustomer: string): Promise<CustomerResponse | null>;
+  createCustomer(
+    customerRequest: CustomerRequest
+  ): Promise<CustomerResponse | null>;
   updateCustomer(
     idCustomer: string,
     customerRequest: CustomerRequest
-  ): CustomerResponse | null;
+  ): Promise<CustomerResponse | null>;
 }

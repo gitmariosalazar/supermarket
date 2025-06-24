@@ -9,15 +9,17 @@ export class CustomerService implements InterfaceUseCaseCustomer {
     private readonly customerRepository: InterfaceCustomerRepository
   ) {}
 
-  findAllCustomers(): CustomerResponse[] {
+  findAllCustomers(): Promise<CustomerResponse[]> {
     return this.customerRepository.findAllCustomers();
   }
 
-  findCustomerById(idCustomer: string): CustomerResponse | null {
+  findCustomerById(idCustomer: string): Promise<CustomerResponse | null> {
     return this.customerRepository.findCustomerById(idCustomer);
   }
 
-  createCustomer(customerRequest: CustomerRequest): CustomerResponse | null {
+  createCustomer(
+    customerRequest: CustomerRequest
+  ): Promise<CustomerResponse | null> {
     return this.customerRepository.createCustomer(
       CustomerMapper.customerRequestToCustomerModel(customerRequest)
     );
@@ -26,7 +28,7 @@ export class CustomerService implements InterfaceUseCaseCustomer {
   updateCustomer(
     idCustomer: string,
     customerRequest: CustomerRequest
-  ): CustomerResponse | null {
+  ): Promise<CustomerResponse | null> {
     return this.customerRepository.updateCustomer(
       idCustomer,
       CustomerMapper.customerRequestToCustomerModel(customerRequest)
